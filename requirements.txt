@@ -1,6 +1,5 @@
-streamlit
-pandas
-numpy
-plotly.express
-plotly.graph_objects
-Image
+streamlit==0.68.1
+pandas==0.25.3
+numpy==1.18.1
+plotly==2.12.1
+PIL==9.2.0
