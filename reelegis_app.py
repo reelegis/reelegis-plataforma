@@ -3,28 +3,10 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import numpy
-from PIL import Image
 
 # source venv/bin/activate
 
-col1, mid, col2 = st.beta_columns([1,1,20])
-with col1:
-    st.image('1-removebg-preview.png', width=99)
-with col2:
-    st.title("Devo reeleger meu candidato?")
-
 st.text("Versão beta 🐟")
-
-
-#st.markdown("[Retornar ao site](https://www.highcharts.com/demo/parliament-chart/grid-light)")
-
-
-#image = Image.open('1-removebg-preview.png')
-
-#st.sidebar.image(image, width=90)
-
-#st.header(":mailbox: Get In Touch With Me!")
-
 
 
 ## base de dados do político
