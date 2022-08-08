@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import numpy
-import plotly.graph_objects as go
 from PIL import Image
 
 # source venv/bin/activate
