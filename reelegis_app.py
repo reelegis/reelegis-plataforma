@@ -5,7 +5,8 @@ import plotly.express as px
 import numpy
 
 # source venv/bin/activate
-
+st.title('Devo reeleger meu candidato?)
+st.subtitle('Plataforma reeLegis')
 st.text("Versão beta 🐟")
 
 
