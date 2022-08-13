@@ -332,6 +332,7 @@ if pol_part == 'Ainda não decidi':
     uf_escolha = st.selectbox("Identifique o Estado", uf)
     if uf_escolha != '':
         tem_state = df2.loc[df2.estado == uf_escolha, :]
+        tem_state_partido = df.loc[df.estado == uf_escolha, :]
         tem = df2['Tema'].unique()
         tem = np.append(tem, '')
         tem.sort()
@@ -339,17 +340,20 @@ if pol_part == 'Ainda não decidi':
         if tema != '':
             random_val = tem_state.loc[tem_state.Tema == tema, :]
             cand_ideal = random_val.loc[random_val.Tema == tema]
+            random_val_partido = tem_state_partido.loc[tem_state_partido.Tema == tema, :]
+            cand_ideal_partido = random_val_partido.loc[random_val_partido.Tema == tema]
             ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
             st.success(ementa.index[0])
             top_politico = cand_ideal['nomeUrna'].value_counts()
             toppol = pd.DataFrame(data=top_politico)
 
-            top_partido = cand_ideal['partido_ext_sigla'].value_counts()
+            top_partido = cand_ideal_partido['partido_ext_sigla'].value_counts()
             toppart = pd.DataFrame(data=top_partido)
             st.subheader(f'Político com maior ênfase temática em {tema}: {toppol.index[0]}')
             st.write(f'Na Unidade Federativa {uf_escolha}, {toppol.index[0]} foi quem mais apresentou propostas sobre {tema}. Em contrapartida, {toppol.index[-1]} foi quem apresentou menos propostas relacionadas a {tema}.')
-            f = pd.DataFrame(cand_ideal[['nomeUrna', 'partido_ext_sigla']])
-            new = f.groupby(['partido_ext_sigla', 'nomeUrna']).size()#.groupby(['partido_ext_sigla']).size()
+            f = pd.DataFrame(cand_ideal['nomeUrna'])
+            f2 = pd.DataFrame(cand_ideal_partido['partido_ext_sigla'])
+            new = f2.groupby(['partido_ext_sigla']).size()#.groupby(['partido_ext_sigla']).size()
             g_sum = new.groupby(['partido_ext_sigla']).sum()
             n = new.groupby(['partido_ext_sigla']).size()
             per = pd.concat([g_sum, n], axis=1)
