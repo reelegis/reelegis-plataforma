@@ -131,7 +131,8 @@ if pol_part == 'Político':
                     #st.write(max_percent)
                     ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                     st.write(ementa.index[0])
-                    st.write(f'Este é um exemplo de proposta apresentada por {escolha_parlamentar_do_estado} sobre {random_tema}. A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.')
+                    st.write(f'Este é um exemplo de proposta apresentada por {escolha_parlamentar_do_estado} sobre {random_tema}.')
+                    #A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                     st.success(ementa_maior)
                     #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
 
@@ -180,7 +181,8 @@ if pol_part == 'Político':
                     #st.write(max_percent)
                     ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                     st.write(ementa.index[0])
-                    st.write(f'Este é um exemplo de proposta apresentada por {escolha_parlamentar_do_estado} sobre {random_tema}. A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.')
+                    st.write(f'Este é um exemplo de proposta apresentada por {escolha_parlamentar_do_estado} sobre {random_tema}.')
+                    #A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                     st.success(ementa_maior)
                     #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
                 st.header('📢  Conta pra gente!')
@@ -301,7 +303,8 @@ if pol_part == 'Partido':
                 #st.write(max_percent)
                 ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                 st.write(ementa.index[0])
-                st.write(f'Este é um exemplo de proposta apresentada pelo {escolha_partido_do_estado} sobre {random_tema}. A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.')
+                st.write(f'Este é um exemplo de proposta apresentada pelo {escolha_partido_do_estado} sobre {random_tema}.')
+                #A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                 st.success(ementa_maior)
                 #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
 
