@@ -7,7 +7,7 @@ import numpy
 # source venv/bin/activate
 st.title('Devo reeleger meu candidato?')
 st.subheader('Plataforma reeLegis')
-st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
+st.text('Aqui você escolhe o/a seu/sua Deputado/a Federal!')
 st.text("Versão beta 🐟")
 
 
