@@ -14,7 +14,7 @@ st.text("Versão beta 🐟")
 ## base de dados do político
 @st.cache(ttl=60*60*24)
 def load_data():
-    data = pd.read_excel('bd-camara-certo.xlsx', index_col=0)
+    data = pd.read_excel('bd-reeleicao-camara.xlsx', index_col=0)
     return data
 
 df = load_data()
@@ -24,7 +24,6 @@ df = df.dropna() #lida com todos os espacos vazios dos dados
 st.markdown(f'Agora em outubro, além de votar para presidente e governador, você também escolherá quem deve ocupar as cadeiras no Legislativo. Pensando nisso, a plataforma **reeLegis** ajuda você a observar o que os **deputados e deputadas federais que estão disputando a reeleição** apresentaram de propostas e mais enfatizaram nesses últimos quatros anos, para que assim você analise quem mais apresentou as propostas sobre temas que você considera importante. Utilizando técnicas de aprendizado de máquina, após o tratamento dos dados, obtivemos {len(df.index)} propostas legislativas apresentadas pelos parlamentares entre 2019 e 2022. Você pode consultar nossa metodologia [retornando ao nosso site principal](https://reelegis.netlify.app).')
 
 st.markdown('Boa busca e esperamos que ajude na escolha de um voto mais consciente!')
-
 #st.markdown(f'Número de casos {len(df.index)}')
 # base de dados do partido
 
@@ -43,26 +42,28 @@ st.markdown('Boa busca e esperamos que ajude na escolha de um voto mais conscien
 
 st.header('Nessas eleições, você prefere votar no Político ou no Partido para o cargo de Deputado/a Federal?')
 pol_part = st.radio("Escolha uma opção", ['','Político', 'Partido', 'Ainda não decidi'], key='1')
+df2 = df[df.nomeUrna != 'Não está concorrendo']
 if pol_part == 'Político':
     st.header('Onde você vota?')
-    uf = df['estado'].unique()
+    uf = df2['estado'].unique()
     uf = np.append(uf, '')
     uf.sort()
     uf_escolha = st.selectbox("Identifique o Estado", uf)
     if uf_escolha != '':
-        f_par2 = df.loc[df.estado == uf_escolha, :]
+        f_par2 = df2.loc[df2.estado == uf_escolha, :]
         f = pd.DataFrame(f_par2)
-        perc = f.nomeAutor.value_counts() #/ len(f) * 100
-        parlamentar_do_estado = f_par2['nomeAutor'].unique()
+        perc = f.nomeUrna.value_counts() #/ len(f) * 100
+        parlamentar_do_estado = f_par2['nomeUrna'].unique()
         parlamentar_do_estado = np.append(parlamentar_do_estado, '')
         parlamentar_do_estado.sort()
         escolha_parlamentar_do_estado = st.selectbox("Identifique o Parlamentar", parlamentar_do_estado)
+        st.error(f'Caso você não encontre o/a Deputado/a do seu estado, isso é devido ao fato dele/a não estar concorrendo à reeleição, ou não apresentou propostas até o período de nossa coleta (18/julho/2022).')
         if escolha_parlamentar_do_estado != '':
-            f_par23 = f_par2.loc[f_par2.nomeAutor == escolha_parlamentar_do_estado, :]
+            f_par23 = f_par2.loc[f_par2.nomeUrna == escolha_parlamentar_do_estado, :]
             f23 = pd.DataFrame(f_par23)
-                    #f.nomeAutor = f.nomeAutor.astype('string')
+                    #f.nomeUrna = f.nomeUrna.astype('string')
             perc23 = f23.Tema.value_counts() / len(f23) * 100
-                    #contar = f['nomeAutor'].value_counts()
+                    #contar = f['nomeUrna'].value_counts()
                     #c = sum(contar)
                     #contar = contar/sum()
                     # filter_partido_proposi2 = f_par2.loc[f_par.autor_partido == choice_dep]
@@ -90,14 +91,14 @@ if pol_part == 'Político':
             st.header('*Ranking* de Parlamentares propositivos')
             st.write(f'No gráfico a seguir, a barra em vermelho indica a posição de {escolha_parlamentar_do_estado} em comparação com os demais deputados federais da Unidade Federativa {uf_escolha} no que se refere à quantidade dos projetos apresentados.')
             #st.subheader(f'{escolha_parlamentar_do_estado}')
-            contagem_parlamentares = f.groupby(f.nomeAutor.tolist(),as_index=False).size()
+            contagem_parlamentares = f.groupby(f.nomeUrna.tolist(),as_index=False).size()
             #st.table(contagem_parlamentares)
 
             #st.table(perc)
             condicao_split_parlamentar = len(contagem_parlamentares.index)
             if condicao_split_parlamentar > 40:
-                #parl_dep = px.bar(perc, x='nomeAutor', height=1500, width=900,
-                #labels=dict(index="Parlamentar", nomeAutor="% Propostas apresentadas"),
+                #parl_dep = px.bar(perc, x='nomeUrna', height=1500, width=900,
+                #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
                 fig1=px.bar(perc, height=1500, width=900, labels=dict(index="Parlamentar", value='Quantidade de propostas apresentadas'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["red" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
@@ -134,8 +135,8 @@ if pol_part == 'Político':
                     st.success(ementa_maior)
                     #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
 
-                #grafico_parlamentar_maior = px.bar(perc, x='nomeAutor', height=1500, width=900, #color='nomeAutor',
-                #    labels=dict(index="Parlamentar", nomeAutor="% Propostas apresentadas"),
+                #grafico_parlamentar_maior = px.bar(perc, x='nomeUrna', height=1500, width=900, #color='nomeUrna',
+                #    labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #    orientation='h')
                 #grafico_parlamentar_maior.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
 
@@ -147,8 +148,8 @@ if pol_part == 'Político':
                 #'.') # Em contrapartida,', perc.index[-1])
                 #st.info('Caso queira visualizar a tabela descritiva do gráfico, clique abaixo.')
             else:
-                #parl_dep = px.bar(perc, x='nomeAutor', height=600, width=700,
-                #labels=dict(index="Parlamentar", nomeAutor="% Propostas apresentadas"),
+                #parl_dep = px.bar(perc, x='nomeUrna', height=600, width=700,
+                #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
                 fig1=px.bar(perc, height=600, width=700, labels=dict(index="Parlamentar", value='Quantidade de propostas apresentadas'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["red" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
@@ -209,7 +210,7 @@ if pol_part == 'Partido':
     if uf_escolha != '':
         f_par2 = df.loc[df.estado == uf_escolha, :]
         f = pd.DataFrame(f_par2)
-        perc = f.nomeAutor.value_counts() #/ len(f) * 100
+        perc = f.nomeUrna.value_counts() #/ len(f) * 100
         partido_do_estado = f_par2['partido_ext_sigla'].unique()
         partido_do_estado = np.append(partido_do_estado, '')
         partido_do_estado.sort()
@@ -218,9 +219,9 @@ if pol_part == 'Partido':
         if escolha_partido_do_estado != '':
             f_par23 = f_par2.loc[f_par2.partido_ext_sigla == escolha_partido_do_estado, :]
             f23 = pd.DataFrame(f_par23)
-                    #f.nomeAutor = f.nomeAutor.astype('string')
+                    #f.nomeUrna = f.nomeUrna.astype('string')
             perc23 = f23.Tema.value_counts() / len(f23) * 100
-                    #contar = f['nomeAutor'].value_counts()
+                    #contar = f['nomeUrna'].value_counts()
                     #c = sum(contar)
                     #contar = contar/sum()
                     # filter_partido_proposi2 = f_par2.loc[f_par.autor_partido == choice_dep]
@@ -240,8 +241,8 @@ if pol_part == 'Partido':
 
             st.write(f'Entre 2019 e 2022, {escolha_partido_do_estado} apresentou {str(n_proposta_uf)} proposições legislativas na Unidade Federativa {uf_escolha}. A maior ênfase temática foi {saliente_uf.index[0]}, com aproximadamente {first}% do total.')
 
-            f = pd.DataFrame(f_par2[['nomeAutor', 'partido_ext_sigla']])
-            new = f.groupby(['partido_ext_sigla', 'nomeAutor']).size()#.groupby(['partido_ext_sigla']).size()
+            f = pd.DataFrame(f_par2[['nomeUrna', 'partido_ext_sigla']])
+            new = f.groupby(['partido_ext_sigla', 'nomeUrna']).size()#.groupby(['partido_ext_sigla']).size()
             g_sum = new.groupby(['partido_ext_sigla']).sum()
             n = new.groupby(['partido_ext_sigla']).size()
             per = pd.concat([g_sum, n], axis=1)
@@ -325,13 +326,13 @@ if pol_part == 'Partido':
 
 if pol_part == 'Ainda não decidi':
     st.header('Onde você vota?')
-    uf = df['estado'].unique()
+    uf = df2['estado'].unique()
     uf = np.append(uf, '')
     uf.sort()
     uf_escolha = st.selectbox("Identifique o Estado", uf)
     if uf_escolha != '':
-        tem_state = df.loc[df.estado == uf_escolha, :]
-        tem = df['Tema'].unique()
+        tem_state = df2.loc[df2.estado == uf_escolha, :]
+        tem = df2['Tema'].unique()
         tem = np.append(tem, '')
         tem.sort()
         tema = st.selectbox("Escolha o tema que você dá mais importância", tem)
@@ -340,15 +341,15 @@ if pol_part == 'Ainda não decidi':
             cand_ideal = random_val.loc[random_val.Tema == tema]
             ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
             st.success(ementa.index[0])
-            top_politico = cand_ideal['nomeAutor'].value_counts()
+            top_politico = cand_ideal['nomeUrna'].value_counts()
             toppol = pd.DataFrame(data=top_politico)
 
             top_partido = cand_ideal['partido_ext_sigla'].value_counts()
             toppart = pd.DataFrame(data=top_partido)
             st.subheader(f'Político com maior ênfase temática em {tema}: {toppol.index[0]}')
             st.write(f'Na Unidade Federativa {uf_escolha}, {toppol.index[0]} foi quem mais apresentou propostas sobre {tema}. Em contrapartida, {toppol.index[-1]} foi quem apresentou menos propostas relacionadas a {tema}.')
-            f = pd.DataFrame(cand_ideal[['nomeAutor', 'partido_ext_sigla']])
-            new = f.groupby(['partido_ext_sigla', 'nomeAutor']).size()#.groupby(['partido_ext_sigla']).size()
+            f = pd.DataFrame(cand_ideal[['nomeUrna', 'partido_ext_sigla']])
+            new = f.groupby(['partido_ext_sigla', 'nomeUrna']).size()#.groupby(['partido_ext_sigla']).size()
             g_sum = new.groupby(['partido_ext_sigla']).sum()
             n = new.groupby(['partido_ext_sigla']).size()
             per = pd.concat([g_sum, n], axis=1)
