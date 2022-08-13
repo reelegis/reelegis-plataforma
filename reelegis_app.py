@@ -7,6 +7,7 @@ import numpy
 # source venv/bin/activate
 st.title('Devo reeleger meu candidato?')
 st.subheader('Plataforma reeLegis')
+st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 st.text("Versão beta 🐟")
 
 
@@ -20,7 +21,7 @@ df = load_data()
 
 df = df.dropna() #lida com todos os espacos vazios dos dados
 
-st.markdown(f'Agora em outubro, além de votar para presidente e governador, você também escolherá quem deve ocupar as cadeiras no Legislativo. Pensando nisso, a plataforma **reeLegis** ajuda você a observar o quê os **deputados e deputadas federais que estão disputando a reeleição** apresentaram de propostas e mais enfatizaram nesses últimos quatros anos, para que assim você analise quem mais apresentou as propostas sobre temas que você considera importante. Utilizando técnicas de aprendizado de máquina, após o tratamento dos dados, obtivemos {len(df.index)} propostas legislativas apresentadas pelos parlamentares entre 2019 e 2022. Você pode consultar nossa metodologia [retornando ao nosso site principal](https://reelegis.netlify.app).')
+st.markdown(f'Agora em outubro, além de votar para presidente e governador, você também escolherá quem deve ocupar as cadeiras no Legislativo. Pensando nisso, a plataforma **reeLegis** ajuda você a observar o que os **deputados e deputadas federais que estão disputando a reeleição** apresentaram de propostas e mais enfatizaram nesses últimos quatros anos, para que assim você analise quem mais apresentou as propostas sobre temas que você considera importante. Utilizando técnicas de aprendizado de máquina, após o tratamento dos dados, obtivemos {len(df.index)} propostas legislativas apresentadas pelos parlamentares entre 2019 e 2022. Você pode consultar nossa metodologia [retornando ao nosso site principal](https://reelegis.netlify.app).')
 
 st.markdown('Boa busca e esperamos que ajude na escolha de um voto mais consciente!')
 
@@ -75,13 +76,14 @@ if pol_part == 'Político':
             n_proposta_uf = f_par23.index
             n_proposta_uf = len(n_proposta_uf)
             df_uf = pd.DataFrame(data=f_par23['Tema'].value_counts())
+            df_uf['Tema'] = pd.to_numeric(df_uf['Tema'])
             saliente_uf = df_uf['Tema']
             gen_uf = pd.DataFrame(data=f_par23['genero'].value_counts())
             genero = gen_uf['genero']
-            first = perc23.iloc[:1].round()
+            first = int(perc23.iloc[:1])
             last = perc23.iloc[:-1].round()
 
-            st.write(f'Entre 2019 e 2022, {escolha_parlamentar_do_estado} apresentou {str(n_proposta_uf)} proposições legislativas. A maior ênfase temática d{genero.index[0]} foi {saliente_uf.index[0]}, com aproximadamente {first.to_string(index=False)}%.')
+            st.write(f'Entre 2019 e 2022, {escolha_parlamentar_do_estado} apresentou {str(n_proposta_uf)} proposições legislativas. A maior ênfase temática d{genero.index[0]} foi {saliente_uf.index[0]}, com aproximadamente {first}% do total.')
 
             #st.subheader(f'Em comparação com os outros parlamentares de {uf_escolha}, {escolha_parlamentar_do_estado}')
             ## grafico destacado aqui!
@@ -119,7 +121,9 @@ if pol_part == 'Político':
                     sorteio = random_val.loc[random_val.Tema == random_tema]
                     maior = pd.DataFrame(sorteio[['ementa', 'maior_prob']]).max()
                     ementa_maior=maior.iloc[0]
-                    probabilidade_maior=(maior.iloc[1] * 100).round()
+
+                    probabilidade_maior=int((maior.iloc[1] * 100))
+
                     #st.write(probabilidade_maior)
 
                     #max_percent = max(sorteio['maior_prob'].items(), key=lambda i: i[1])
@@ -168,7 +172,7 @@ if pol_part == 'Político':
                     sorteio = random_val.loc[random_val.Tema == random_tema]
                     maior = pd.DataFrame(sorteio[['ementa', 'maior_prob']]).max()
                     ementa_maior=maior.iloc[0]
-                    probabilidade_maior=(maior.iloc[1] * 100).round()
+                    probabilidade_maior=int((maior.iloc[1] * 100))
                     #st.write(probabilidade_maior)
 
                     #max_percent = max(sorteio['maior_prob'].items(), key=lambda i: i[1])
@@ -186,7 +190,7 @@ if pol_part == 'Político':
                 <input type="text" name="name" placeholder="Nome" required>
                 <input type="email" name="email" placeholder="E-mail" required>
                 <textarea name="message" placeholder="Sua mensagem"></textarea>
-                <button type="submit">Send</button>
+                <button type="submit">Enviar</button>
                 </form>
                 """
                 st.markdown(contact_form, unsafe_allow_html=True)
@@ -231,10 +235,10 @@ if pol_part == 'Partido':
             n_proposta_uf = len(n_proposta_uf)
             df_uf = pd.DataFrame(data=f_par23['Tema'].value_counts())
             saliente_uf = df_uf['Tema']
-            first = perc23.iloc[:1].round()
+            first = int(perc23.iloc[:1])
             last = perc23.iloc[:-1].round()
 
-            st.write(f'Entre 2019 e 2022, {escolha_partido_do_estado} apresentou {str(n_proposta_uf)} proposições legislativas na Unidade Federativa {uf_escolha}. A maior ênfase temática foi {saliente_uf.index[0]}, com aproximadamente {first.to_string(index=False)}%.')
+            st.write(f'Entre 2019 e 2022, {escolha_partido_do_estado} apresentou {str(n_proposta_uf)} proposições legislativas na Unidade Federativa {uf_escolha}. A maior ênfase temática foi {saliente_uf.index[0]}, com aproximadamente {first}% do total.')
 
             f = pd.DataFrame(f_par2[['nomeAutor', 'partido_ext_sigla']])
             new = f.groupby(['partido_ext_sigla', 'nomeAutor']).size()#.groupby(['partido_ext_sigla']).size()
@@ -251,10 +255,10 @@ if pol_part == 'Partido':
             #orientation='h')
             st.header('*Ranking* de Partidos Políticos propositivos')
             st.write(f'A barra em vermelho indica a posição do {escolha_partido_do_estado}  em comparação com os demais partidos que possuem representantes na Câmara Federal da Unidade Federativa {uf_escolha} no que se refere aos projetos apresentados.')
-            partido_selecionado = per_capita.loc[escolha_partido_do_estado]
+            partido_selecionado = int(per_capita.loc[escolha_partido_do_estado])
             #st.write(partido_selecionado.index[0])
             #st.write(f'{partido_selecionado.to_string(index=False)}')
-            st.write(f'O {escolha_partido_do_estado} apresentou, em média, {partido_selecionado.to_string(index=False)} propostas por Parlamentar na Unidade Federativa {uf_escolha}.')
+            st.write(f'O {escolha_partido_do_estado} apresentou, em média, {partido_selecionado} propostas por Parlamentar na Unidade Federativa {uf_escolha}.')
             #st.header(f'Taxa _per capita_ de propostas apresentadas pelo {escolha_partido_do_estado} na Unidade Federativa {uf_escolha}')
             fig_partido=px.bar(per_capita, height=600, width=700, labels=dict(partido_ext_sigla="Partido", value='Taxa per capita'), orientation='h')
             fig_partido["data"][0]["marker"]["color"] = ["red" if c == escolha_partido_do_estado else "#C0C0C0" for c in fig_partido["data"][0]["y"]]
@@ -289,7 +293,7 @@ if pol_part == 'Partido':
                 sorteio = random_val.loc[random_val.Tema == random_tema]
                 maior = pd.DataFrame(sorteio[['ementa', 'maior_prob']]).max()
                 ementa_maior=maior.iloc[0]
-                probabilidade_maior=(maior.iloc[1] * 100).round()
+                probabilidade_maior=int((maior.iloc[1] * 100))
                 #st.write(probabilidade_maior)
 
                 #max_percent = max(sorteio['maior_prob'].items(), key=lambda i: i[1])
@@ -308,7 +312,7 @@ if pol_part == 'Partido':
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="E-mail" required>
             <textarea name="message" placeholder="Sua mensagem"></textarea>
-            <button type="submit">Send</button>
+            <button type="submit">Enviar</button>
             </form>
             """
             st.markdown(contact_form, unsafe_allow_html=True)
@@ -385,7 +389,7 @@ if pol_part == 'Ainda não decidi':
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="E-mail" required>
             <textarea name="message" placeholder="Sua mensagem"></textarea>
-            <button type="submit">Send</button>
+            <button type="submit">Enviar</button>
             </form>
             """
             st.markdown(contact_form, unsafe_allow_html=True)
