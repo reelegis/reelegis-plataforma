@@ -375,14 +375,14 @@ if pol_part == 'Ainda não decidi':
             t_first = toppol.iloc[:1].round()
             #tf = pd.DataFrame(data=t_first)
             #st.write(f'{toppol.index[0]} apresentou {t_first.to_string(index=False)} propostas sobre {tema}.')
-            f = pd.DataFrame(t_first)
 
-            contagem_parlamentares = f.groupby(f.nomeUrna.tolist(),as_index=False).size()
+            #contagem_parlamentares = t_first.groupby(t_first.nomeUrna.tolist(),as_index=False).size()
 #st.table(contagem_parlamentares)
 
 #st.table(perc)
-            condicao_split_parlamentar = len(contagem_parlamentares.index)
-            if condicao_split_parlamentar > 35:
+            condicao_split_parlamentar = len(toppol.index)
+
+            if condicao_split_parlamentar > 37:
                 fig_político=px.bar(toppol, height=1500, width=900, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
                 fig_político["data"][0]["marker"]["color"] = ["green" if c == toppol.index[0] else "#A9DFBF" for c in fig_político["data"][0]["y"]]
                 fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
@@ -396,7 +396,7 @@ if pol_part == 'Ainda não decidi':
                 st.plotly_chart(fig_político)
 
 
-            st.subheader(f'No tema sobre {tema}, o {p.index[0]} apresentou maior ênfase temática que os outros Partidos na Unidade Federativa {uf_escolha}')
+                st.subheader(f'No tema sobre {tema}, o {p.index[0]} apresentou maior ênfase temática que os outros Partidos na Unidade Federativa {uf_escolha}')
             #st.write(f'O {p.index[0]} apresentou em média  propostas legislativas sobre {tema} por Parlamentar.')
             fig_partido=px.bar(p, height=600, width=700, labels=dict(partido_ext_sigla="Partido", value='Taxa per capita'), orientation='h')
             fig_partido["data"][0]["marker"]["color"] = ["green" if c == p.index[0] else "#A9DFBF" for c in fig_partido["data"][0]["y"]]
