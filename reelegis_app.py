@@ -381,7 +381,7 @@ if pol_part == 'Ainda não decidi':
 
 #st.table(perc)
             condicao_split_parlamentar = len(contagem_parlamentares.index)
-            if condicao_split_parlamentar < 35:
+            if condicao_split_parlamentar > 40:
                 fig_político=px.bar(toppol, height=1500, width=900, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
                 fig_político["data"][0]["marker"]["color"] = ["green" if c == toppol.index[0] else "#A9DFBF" for c in fig_político["data"][0]["y"]]
                 fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
