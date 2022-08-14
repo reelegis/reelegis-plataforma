@@ -375,8 +375,9 @@ if pol_part == 'Ainda não decidi':
             t_first = toppol.iloc[:1].round()
             #tf = pd.DataFrame(data=t_first)
             #st.write(f'{toppol.index[0]} apresentou {t_first.to_string(index=False)} propostas sobre {tema}.')
+            f = pd.DataFrame(t_first)
 
-            contagem_parlamentares = t_first.groupby(t_first.nomeUrna.tolist(),as_index=False).size()
+            contagem_parlamentares = f.groupby(f.nomeUrna.tolist(),as_index=False).size()
 #st.table(contagem_parlamentares)
 
 #st.table(perc)
