@@ -3,3 +3,4 @@ pandas>=0.25.3
 numpy>=1.18.1
 plotly_express>=0.4.1
 openpyxl>=3.0.7
+Image >=9.2.0
