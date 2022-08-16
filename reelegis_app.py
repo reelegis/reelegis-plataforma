@@ -62,8 +62,8 @@ if pol_part == 'Político':
         parlamentar_do_estado = f_par2['nomeUrna'].unique()
         parlamentar_do_estado = np.append(parlamentar_do_estado, '')
         parlamentar_do_estado.sort()
-        st.subheader('Selecione o Candidato')
-        escolha_parlamentar_do_estado = st.selectbox("", parlamentar_do_estado)
+        st.subheader('Qual político você gostaria de visualizar?')
+        escolha_parlamentar_do_estado = st.selectbox("Selecione o Candidato", parlamentar_do_estado)
         st.error(f'Caso você não encontre o/a Deputado/a do seu estado, isso é devido ao fato dele/a não estar concorrendo à reeleição, ou não apresentou propostas até o período de nossa coleta (18/07/2022).')
         if escolha_parlamentar_do_estado != '':
             f_par23 = f_par2.loc[f_par2.nomeUrna == escolha_parlamentar_do_estado, :]
@@ -214,7 +214,7 @@ if pol_part == 'Partido':
     uf = df['estado'].unique()
     uf = np.append(uf, '')
     uf.sort()
-    uf_escolha = st.selectbox("Identifique o Estado", uf)
+    uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
         f_par2 = df.loc[df.estado == uf_escolha, :]
         f = pd.DataFrame(f_par2)
@@ -222,8 +222,8 @@ if pol_part == 'Partido':
         partido_do_estado = f_par2['partido_ext_sigla'].unique()
         partido_do_estado = np.append(partido_do_estado, '')
         partido_do_estado.sort()
-        st.subheader('Selecione o Partido')
-        escolha_partido_do_estado = st.selectbox("", partido_do_estado)
+        st.subheader('Qual partido você gostaria de visualizar?')
+        escolha_partido_do_estado = st.selectbox("Selecionar o partido", partido_do_estado)
         #st.error(f'Alguns partidos podem não ter sido eleitos na Unidade Federativa {uf_escolha}.')
         if escolha_partido_do_estado != '':
             f_par23 = f_par2.loc[f_par2.partido_ext_sigla == escolha_partido_do_estado, :]
