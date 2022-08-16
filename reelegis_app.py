@@ -194,7 +194,7 @@ if pol_part == 'Político':
             st.header('📢  Conta pra gente!')
             st.warning('Fique à vontade para nos informar sobre algo que queria ter visto nesta aba ou sobre a plataforma, para melhorarmos no futuro!')
             contact_form = """
-            <form action="https://formsubmit.co/renata.aguiar@ufpe.br" method="POST">
+            <form action="https://formsubmit.co/reelegis@gmail.com" method="POST">
             <input type="hidden" name="_captcha" value="false">
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="E-mail" required>
@@ -336,7 +336,7 @@ if pol_part == 'Partido':
             st.header('📢  Conta pra gente!')
             st.warning('Fique à vontade para nos informar sobre algo que queria ter visto nesta aba ou sobre a plataforma, para melhorarmos no futuro!')
             contact_form = """
-            <form action="https://formsubmit.co/renata.aguiar@ufpe.br" method="POST">
+            <form action="https://formsubmit.co/reelegis@gmail.com" method="POST">
             <input type="hidden" name="_captcha" value="false">
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="E-mail" required>
@@ -433,7 +433,7 @@ if pol_part == 'Ainda não decidi':
             st.header('📢  Conta pra gente!')
             st.warning('Fique à vontade para nos informar sobre algo que queria ter visto nesta aba ou sobre a plataforma, para melhorarmos no futuro!')
             contact_form = """
-            <form action="https://formsubmit.co/renata.aguiar@ufpe.br" method="POST">
+            <form action="https://formsubmit.co/reelegis@gmail.com" method="POST">
             <input type="hidden" name="_captcha" value="false">
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="E-mail" required>
