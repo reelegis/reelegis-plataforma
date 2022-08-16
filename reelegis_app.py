@@ -379,7 +379,7 @@ if pol_part == 'Ainda não decidi':
             top_partido = cand_ideal_partido['partido_ext_sigla'].value_counts()
             toppart = pd.DataFrame(data=top_partido)
             st.subheader(f'Político com maior ênfase temática em **{tema}: {toppol.index[0]}**')
-            st.write(f'Na Unidade Federativa {uf_escolha}, {toppol.index[0]} foi quem mais apresentou propostas sobre {tema}. Em contrapartida, {toppol.index[-1]} foi quem apresentou menos propostas relacionadas a {tema}.')
+            st.write(f'Na Unidade Federativa **{uf_escolha}, {toppol.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{toppol.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
             f = pd.DataFrame(cand_ideal['nomeUrna'])
             f2 = pd.DataFrame(cand_ideal_partido['partido_ext_sigla'])
             new = f2.groupby(['partido_ext_sigla']).size()#.groupby(['partido_ext_sigla']).size()
@@ -391,7 +391,7 @@ if pol_part == 'Ainda não decidi':
             per_capita.columns=['Taxa per capita']
             p = per_capita.sort_values(by=['Taxa per capita'], ascending=False)
             st.subheader(f'Partido com maior ênfase temática em **{tema}: {p.index[0]}**')
-            st.info(f'Levando em consideração a taxa _por parlamentar_, na Unidade Federativa **{uf_escolha}, o **{p.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{p.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
+            st.write(f'Levando em consideração a taxa _por parlamentar_, na Unidade Federativa **{uf_escolha}**, o **{p.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{p.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
             st.success(f'A taxa _por parlamentar_ de propostas apresentadas leva em consideração o total de projetos apresentados do partido no tema *{tema}* dividido pela quantidade de seus parlamentares que também apresentaram propostas sobre o mesmo tema. A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
 
             st.header('📊 Comparativo')
