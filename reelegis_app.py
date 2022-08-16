@@ -5,7 +5,7 @@ import plotly.express as px
 import numpy
 
 # source venv/bin/activate
-col1, mid, col2 = st.beta_columns([1,1,20])
+col1, mid, col2 = st.columns([1,1,20])
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
