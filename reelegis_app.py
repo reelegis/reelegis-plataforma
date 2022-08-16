@@ -9,9 +9,9 @@ col1, mid, col2 = st.columns([1,1,20])
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
-    st.title("Devo reeleger meu candidato?")
+    st.title("Reeleger ou renovar?")
 
-st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
+#st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
 st.text("Versão beta 🐟")
 
@@ -26,7 +26,9 @@ df = load_data()
 
 df = df.dropna() #lida com todos os espacos vazios dos dados
 
-st.markdown(f'Agora em outubro, além de votar para presidente e governador, você também escolherá quem deve ocupar as cadeiras no Legislativo. Pensando nisso, a plataforma **reeLegis** ajuda você a observar quais temas o/a Deputado/a apresentou em proposta legislativa. De modo mais claro, traduzimos as propostas apresentadas pelos/as Parlamentares em **temas** como Saúde, Trabalho e Educação, para que você possa escolher o político ou o partido, para que assim você analise quem mais apresentou as propostas sobre temas que você considera importante. Utilizando técnicas de aprendizado de máquina, após o tratamento e filtragem dos dados, obtivemos {len(df.index)} propostas legislativas apresentadas pelos parlamentares entre 2019 e 2022. Você pode consultar nossa metodologia [retornando ao nosso site principal](https://reelegis.netlify.app).')
+st.markdown('No dia 2 de outubro de 2022 teremos novas eleições. É uma oportunidade valiosa para renovar ou premiar a atual composição do Congresso Nacional. Pensando nisso, apresentamos a plataforma reeLegis! Com o uso de aprendizagem computacional, ela permite analisar e comparar a atuação de todos os Deputados e Deputadas Federais que buscam a reeleição. E aí? Vai reeleger ou renovar?')
+
+#st.markdown(f'Agora em outubro, além de votar para presidente e governador, você também escolherá quem deve ocupar as cadeiras no Legislativo. Pensando nisso, a plataforma **reeLegis** ajuda você a observar quais temas o/a Deputado/a apresentou em proposta legislativa. De modo mais claro, traduzimos as propostas apresentadas pelos/as Parlamentares em **temas** como Saúde, Trabalho e Educação, para que você possa escolher o político ou o partido, para que assim você analise quem mais apresentou as propostas sobre temas que você considera importante. Utilizando técnicas de aprendizado de máquina, após o tratamento e filtragem dos dados, obtivemos {len(df.index)} propostas legislativas apresentadas pelos parlamentares entre 2019 e 2022. Você pode consultar nossa metodologia [retornando ao nosso site principal](https://reelegis.netlify.app).')
 
 st.markdown('Boa busca e esperamos que ajude na escolha de um voto mais consciente!')
 #st.markdown(f'Número de casos {len(df.index)}')
