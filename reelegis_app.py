@@ -357,14 +357,15 @@ if pol_part == 'Ainda não decidi':
     uf = df2['estado'].unique()
     uf = np.append(uf, '')
     uf.sort()
-    uf_escolha = st.selectbox("Identifique o Estado", uf)
+    uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
         tem_state = df2.loc[df2.estado == uf_escolha, :]
         tem_state_partido = df.loc[df.estado == uf_escolha, :]
         tem = df2['Tema'].unique()
         tem = np.append(tem, '')
         tem.sort()
-        tema = st.selectbox("Escolha o tema que você dá mais importância", tem)
+        st.header('Qual tema você dá mais importância?')
+        tema = st.selectbox("Selecione o tema", tem)
         if tema != '':
             random_val = tem_state.loc[tem_state.Tema == tema, :]
             cand_ideal = random_val.loc[random_val.Tema == tema]
@@ -377,7 +378,7 @@ if pol_part == 'Ainda não decidi':
 
             top_partido = cand_ideal_partido['partido_ext_sigla'].value_counts()
             toppart = pd.DataFrame(data=top_partido)
-            st.subheader(f'Político com maior ênfase temática em {tema}: {toppol.index[0]}')
+            st.subheader(f'Político com maior ênfase temática em **{tema}: {toppol.index[0]}**')
             st.write(f'Na Unidade Federativa {uf_escolha}, {toppol.index[0]} foi quem mais apresentou propostas sobre {tema}. Em contrapartida, {toppol.index[-1]} foi quem apresentou menos propostas relacionadas a {tema}.')
             f = pd.DataFrame(cand_ideal['nomeUrna'])
             f2 = pd.DataFrame(cand_ideal_partido['partido_ext_sigla'])
@@ -389,13 +390,13 @@ if pol_part == 'Ainda não decidi':
             per_capita = pd.DataFrame(percapita)
             per_capita.columns=['Taxa per capita']
             p = per_capita.sort_values(by=['Taxa per capita'], ascending=False)
-            st.subheader(f'Partido com maior ênfase temática em {tema}: {p.index[0]}')
-            st.write(f'Levando em consideração a _taxa per capita_, na Unidade Federativa {uf_escolha}, o {p.index[0]} foi quem mais apresentou propostas sobre {tema}. Em contrapartida, {p.index[-1]} foi quem apresentou menos propostas relacionadas a {tema}.')
-            st.info(f'A taxa _por parlamentar_ de propostas apresentadas leva em consideração o total de projetos apresentados do partido no tema {tema} dividido pela quantidade de seus parlamentares que também apresentaram propostas sobre o mesmo tema. A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
+            st.subheader(f'Partido com maior ênfase temática em **{tema}: {p.index[0]}**')
+            st.info(f'Levando em consideração a taxa _por parlamentar_, na Unidade Federativa **{uf_escolha}, o **{p.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{p.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
+            st.success(f'A taxa _por parlamentar_ de propostas apresentadas leva em consideração o total de projetos apresentados do partido no tema *{tema}* dividido pela quantidade de seus parlamentares que também apresentaram propostas sobre o mesmo tema. A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
 
             st.header('📊 Comparativo')
 
-            st.subheader(f'No tema sobre {tema}, {toppol.index[0]} apresentou maior ênfase temática que os outros Parlamentares na Unidade Federativa {uf_escolha}.')
+            st.subheader(f'No tema sobre **{tema}, {toppol.index[0]}** apresentou maior ênfase temática que os outros Parlamentares na Unidade Federativa **{uf_escolha}**.')
             #parlamentar_tema_selecionado = per_capita.loc[escolha_partido_do_estado]
             t_first = toppol.iloc[:1].round()
             #tf = pd.DataFrame(data=t_first)
@@ -409,14 +410,14 @@ if pol_part == 'Ainda não decidi':
 
             if condicao_split_parlamentar > 37:
                 fig_político=px.bar(toppol, height=1500, width=900, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
-                fig_político["data"][0]["marker"]["color"] = ["green" if c == toppol.index[0] else "#A9DFBF" for c in fig_político["data"][0]["y"]]
+                fig_político["data"][0]["marker"]["color"] = ["blue" if c == toppol.index[0] else "#C0C0C0" for c in fig_político["data"][0]["y"]]
                 fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
                 st.plotly_chart(fig_político)
 
             else:
 
                 fig_político=px.bar(toppol, height=600, width=700, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
-                fig_político["data"][0]["marker"]["color"] = ["green" if c == toppol.index[0] else "#A9DFBF" for c in fig_político["data"][0]["y"]]
+                fig_político["data"][0]["marker"]["color"] = ["blue" if c == toppol.index[0] else "#C0C0C0" for c in fig_político["data"][0]["y"]]
                 fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
                 st.plotly_chart(fig_político)
 
@@ -424,7 +425,7 @@ if pol_part == 'Ainda não decidi':
                 st.subheader(f'No tema sobre {tema}, o {p.index[0]} apresentou maior ênfase temática que os outros Partidos na Unidade Federativa {uf_escolha}')
             #st.write(f'O {p.index[0]} apresentou em média  propostas legislativas sobre {tema} por Parlamentar.')
             fig_partido=px.bar(p, height=600, width=700, labels=dict(partido_ext_sigla="", value='Taxa por parlamentar'), orientation='h')
-            fig_partido["data"][0]["marker"]["color"] = ["green" if c == p.index[0] else "#A9DFBF" for c in fig_partido["data"][0]["y"]]
+            fig_partido["data"][0]["marker"]["color"] = ["blue" if c == p.index[0] else "#C0C0C0" for c in fig_partido["data"][0]["y"]]
             fig_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
             st.plotly_chart(fig_partido)
 
