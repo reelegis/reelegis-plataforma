@@ -223,7 +223,7 @@ if pol_part == 'Partido':
         partido_do_estado = np.append(partido_do_estado, '')
         partido_do_estado.sort()
         st.subheader('Qual partido você gostaria de visualizar?')
-        escolha_partido_do_estado = st.selectbox("Selecionar o partido", partido_do_estado)
+        escolha_partido_do_estado = st.selectbox("Selecione o partido", partido_do_estado)
         #st.error(f'Alguns partidos podem não ter sido eleitos na Unidade Federativa {uf_escolha}.')
         if escolha_partido_do_estado != '':
             f_par23 = f_par2.loc[f_par2.partido_ext_sigla == escolha_partido_do_estado, :]
