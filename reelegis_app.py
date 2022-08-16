@@ -5,9 +5,14 @@ import plotly.express as px
 import numpy
 
 # source venv/bin/activate
-st.title('Devo reeleger meu candidato?')
-st.subheader('Plataforma reeLegis')
-st.text('Aqui você escolhe se reelege o/a seu/sua Deputado/a Federal!')
+col1, mid, col2 = st.beta_columns([1,1,20])
+with col1:
+    st.image('1-removebg-preview.png', width=99)
+with col2:
+    st.title("Devo reeleger meu candidato?")
+
+st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
+
 st.text("Versão beta 🐟")
 
 
