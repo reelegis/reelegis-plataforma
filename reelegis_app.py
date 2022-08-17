@@ -453,20 +453,16 @@ if pol_part == 'Ainda não decidi':
             
 
 google_analytics_js = """
-<!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-29VXXE2E33');
-</script>
+    gtag('config', 'G-29VXXE2E33');
+    </script>
     """
-fb_comments = """
-        <div class="fb-comments" data-href="https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/" data-numposts="5" data-width=""></div>
-        """
+fb_comments = """<div class="fb-comments" data-href="https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/" data-numposts="5" data-width=""></div>"""
 #st.components.v1.html(fb_comments)
 st.components.v1.iframe('https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/google_analytics.html', height=1, scrolling=False)
 
