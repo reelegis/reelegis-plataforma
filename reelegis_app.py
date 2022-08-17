@@ -464,7 +464,6 @@ GA_JS = """
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-29VXXE2E33');
     </script>
     """
