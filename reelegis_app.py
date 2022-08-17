@@ -13,8 +13,8 @@ with col2:
 
 #st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
-st.text("Versão beta 🐟")
-
+st.text("Versão beta 🐟 v.0.0.1")
+st.text('Última atualização em 17/08/2022')
 
 ## base de dados do político
 @st.cache(ttl=60*60*24)
