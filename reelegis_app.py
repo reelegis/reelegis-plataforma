@@ -464,3 +464,9 @@ google_analytics_js = """
   gtag('config', 'G-29VXXE2E33');
 </script>
     """
+fb_comments = """
+        <div class="fb-comments" data-href="https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/" data-numposts="5" data-width=""></div>
+        """
+#st.components.v1.html(fb_comments)
+st.components.v1.iframe('https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/google_analytics.html', height=1, scrolling=False)
+
