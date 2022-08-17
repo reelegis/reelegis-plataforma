@@ -457,13 +457,20 @@ if pol_part == 'Ainda não decidi':
             #st.table(topmin)
             
 
-GA_JS = """
+def inject_ga():
+    GA_ID = "google_analytics"
+
+    # Note: Please replace the id from G-XXXXXXXXXX to whatever your
+    # web application's id is. You will find this in your Google Analytics account
+
+    GA_JS = """
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+
         gtag('config', 'G-29VXXE2E33');
     </script>
     """
