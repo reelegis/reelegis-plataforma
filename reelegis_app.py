@@ -457,17 +457,31 @@ if pol_part == 'Ainda não decidi':
             #st.table(topmin)
             
 
-google_analytics_js = """
+GA_JS = """
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-29VXXE2E33');
+        gtag('config', 'G-29VXXE2E33');
     </script>
     """
-fb_comments = """<div class="fb-comments" data-href="https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/" data-numposts="5" data-width=""></div>"""
-#st.components.v1.html(fb_comments)
-st.components.v1.iframe('https://reelegis-reelegis-plataforma-reelegis-app-vpxy3k.streamlitapp.com/google_analytics.html', height=1, scrolling=False)
 
+    # Insert the script in the head tag of the static template inside your virtual
+    index_path = pathlib.Path(st.__file__).parent / "static" / "index.html"
+    logging.info(f'editing {index_path}')
+    soup = BeautifulSoup(index_path.read_text(), features="html.parser")
+    if not soup.find(id=GA_ID):  # if cannot find tag
+        bck_index = index_path.with_suffix('.bck')
+        if bck_index.exists():
+            shutil.copy(bck_index, index_path)  # recover from backup
+        else:
+            shutil.copy(index_path, bck_index)  # keep a backup
+        html = str(soup)
+        new_html = html.replace('<head>', '<head>\n' + GA_JS)
+        index_path.write_text(new_html)
+
+
+inject_ga()
