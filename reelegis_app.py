@@ -13,7 +13,7 @@ col1, mid, col2 = st.beta_columns([1,1,20])
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
-    st.title("Reeleger ou renovar?")
+    st.title("  Reeleger ou renovar?")
 
 #st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
