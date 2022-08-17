@@ -450,3 +450,17 @@ if pol_part == 'Ainda não decidi':
 
 
             #st.table(topmin)
+            
+
+google_analytics_js = """
+<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-29VXXE2E33');
+</script>
+    """
