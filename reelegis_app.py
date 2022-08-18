@@ -70,7 +70,7 @@ if pol_part == 'Político':
         parlamentar_do_estado.sort()
         st.subheader('Qual político você gostaria de visualizar?')
         escolha_parlamentar_do_estado = st.selectbox("Selecione o Candidato", parlamentar_do_estado)
-        st.error(f'Caso você não encontre o/a Deputado/a do seu estado, isso é devido ao fato dele/a não estar concorrendo à reeleição, ou não apresentou propostas até o período de nossa coleta (18/07/2022).')
+        #st.error(f'Caso você não encontre o/a Deputado/a do seu estado, isso é devido ao fato dele/a não estar concorrendo à reeleição, ou não apresentou propostas até o período de nossa coleta (18/07/2022).')
         if escolha_parlamentar_do_estado != '':
             f_par23 = f_par2.loc[f_par2.nomeUrna == escolha_parlamentar_do_estado, :]
             f23 = pd.DataFrame(f_par23)
