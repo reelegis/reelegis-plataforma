@@ -112,7 +112,7 @@ if pol_part == 'Político':
 
             #st.table(perc)
             condicao_split_parlamentar = len(contagem_parlamentares.index)
-            if condicao_split_parlamentar > 40:
+            if condicao_split_parlamentar > 29:
                 #parl_dep = px.bar(perc, x='nomeUrna', height=1500, width=900,
                 #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
