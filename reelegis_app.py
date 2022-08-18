@@ -193,7 +193,7 @@ if pol_part == 'Político':
                     #st.write(max_percent)
                 ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                 st.write(ementa.index[0])
-                st.write(f'*Este é um exemplo de proposta apresentada por* **{escolha_parlamentar_do_estado}** *sobre* **{random_tema}**.')
+                st.write(f'*Esta é uma proposta apresentada por* **{escolha_parlamentar_do_estado}** que trata **{random_tema}**.')
                 # A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                 st.success(ementa_maior)
                     #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
@@ -277,7 +277,7 @@ if pol_part == 'Partido':
             l = lugar[(lugar.index == escolha_partido_do_estado)]
             posit = l['posicao'].iloc[0]
 
-            st.info(f'O **{escolha_partido_do_estado}** apresentou, **em média, {partido_selecionado}** propostas por Parlamentar na Unidade Federativa **{uf_escolha}**. No *ranking*, **{escolha_partido_do_estado}** está na **{posit}ᵃ** posição em comparação aos demais.')
+            st.info(f'O **{escolha_partido_do_estado}** apresentou, **em média, {partido_selecionado}** propostas por Parlamentar na Unidade Federativa **{uf_escolha}**. No *ranking*, **{escolha_partido_do_estado}** está na **{posit}ᵃ** posição.')
 
 
 
@@ -291,7 +291,7 @@ if pol_part == 'Partido':
             #estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
 
             #st.plotly_chart(estado_parla)
-            st.success('A taxa _por parlamentar_ de propostas apresentadas leva em consideração o total de projetos apresentados do partido neste estado dividido pela quantidade de seus parlamentares. A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
+            st.success('A _taxa de propostas apresentadas por parlamentar_ leva em consideração o total de projetos apresentados do partido nesta Unidade Federativa dividido pela quantidade de seus parlamentares.')# A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
 
 
             #st.info(f'Na Unidade Federativa, **{uf_escolha}** o **{escolha_partido_do_estado}** ap')
@@ -301,7 +301,7 @@ if pol_part == 'Partido':
             st.title(f'Ênfase temática apresentada por {escolha_partido_do_estado}')
             estado_partido = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
             # site com as cores: https://plotly.com/python/builtin-colorscales/
-            labels=dict(index="Tema", Tema="Ênfase Temática"), orientation='h')
+            labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
             estado_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
             st.plotly_chart(estado_partido)
 
@@ -313,7 +313,7 @@ if pol_part == 'Partido':
             last = perc23.iloc[:-1].round()
 
 
-            st.info(f'Entre 2019 e 2022, o **{escolha_partido_do_estado}** apresentou **um total de {str(n_proposta_uf)}** propostas legislativas na Unidade Federativa **{uf_escolha}**. A maior ênfase temática foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total**.')
+            st.info(f'O **{escolha_partido_do_estado}** apresentou **um total de {str(n_proposta_uf)}** propostas legislativas pela Unidade Federativa **{uf_escolha}**. A maior ênfase temática foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total**.')
 
 
             ## conhecer as Propostas
