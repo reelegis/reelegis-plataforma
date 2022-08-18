@@ -24,12 +24,12 @@ st.text('Última atualização em 17/08/2022')
 ## base de dados do político
 @st.cache(ttl=60*60*24)
 def load_data():
-    data = pd.read_excel('bd-reeleicao-camara.xlsx', index_col=0)
+    data = pd.read_excel('bd-reelegis-camara.xlsx', index_col=0)
     return data
 
 df = load_data()
 
-df = df.dropna() #lida com todos os espacos vazios dos dados
+#df = df.dropna() #lida com todos os espacos vazios dos dados
 
 st.markdown('No dia 2 de outubro de 2022 teremos novas eleições. É uma oportunidade valiosa para renovar ou premiar a atual composição do Congresso Nacional. Pensando nisso, apresentamos a plataforma reeLegis! Com o uso de aprendizagem computacional, ela permite analisar e comparar a atuação de todos os Deputados e Deputadas Federais que buscam a reeleição. **E aí? Vai reeleger ou renovar?**')
 
@@ -54,14 +54,15 @@ st.markdown('[Aqui, você pode retornar ao site.](https://reelegis.netlify.app)'
 st.header('Nessas eleições, você prefere votar no Político ou no Partido para o cargo de Deputado/a Federal?')
 pol_part = st.radio("Escolha uma opção", ['','Político', 'Partido', 'Ainda não decidi'], key='1')
 df2 = df[df.nomeUrna != 'Não está concorrendo']
+df2 = df2.dropna()
 if pol_part == 'Político':
     st.header('Onde você vota?')
-    uf = df2['estado'].unique()
+    uf = df2['estado_extenso_eleicao'].unique()
     uf = np.append(uf, '')
     uf.sort()
     uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
-        f_par2 = df2.loc[df2.estado == uf_escolha, :]
+        f_par2 = df2.loc[df2.estado_extenso_eleicao == uf_escolha, :]
         f = pd.DataFrame(f_par2)
         perc = f.nomeUrna.value_counts() #/ len(f) * 100
         parlamentar_do_estado = f_par2['nomeUrna'].unique()
@@ -216,12 +217,13 @@ if pol_part == 'Político':
 
 if pol_part == 'Partido':
     st.header('Onde você vota?')
-    uf = df['estado'].unique()
+    df = df.dropna()
+    uf = df['estado_partido_exercicio'].unique()
     uf = np.append(uf, '')
     uf.sort()
     uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
-        f_par2 = df.loc[df.estado == uf_escolha, :]
+        f_par2 = df.loc[df.estado_partido_exercicio == uf_escolha, :]
         f = pd.DataFrame(f_par2)
         perc = f.nomeUrna.value_counts() #/ len(f) * 100
         partido_do_estado = f_par2['partido_ext_sigla'].unique()
@@ -359,13 +361,13 @@ if pol_part == 'Partido':
 
 if pol_part == 'Ainda não decidi':
     st.header('Onde você vota?')
-    uf = df2['estado'].unique()
+    uf = df2['estado_extenso_eleicao'].unique()
     uf = np.append(uf, '')
     uf.sort()
     uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
-        tem_state = df2.loc[df2.estado == uf_escolha, :]
-        tem_state_partido = df.loc[df.estado == uf_escolha, :]
+        tem_state = df2.loc[df2.estado_extenso_eleicao == uf_escolha, :]
+        tem_state_partido = df.loc[df.estado_partido_exercicio == uf_escolha, :]
         tem = df2['Tema'].unique()
         tem = np.append(tem, '')
         tem.sort()
