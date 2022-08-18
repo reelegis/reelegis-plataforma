@@ -102,7 +102,7 @@ if pol_part == 'Político':
             #st.write(lugar.index)
 
             posit = l['posicao'].iloc[0]
-            st.info(f'**{escolha_parlamentar_do_estado} está na {posit}ᵃ posição no *ranking*.')
+            st.info(f'**{escolha_parlamentar_do_estado}** está na {posit}ᵃ posição no *ranking*.')
             #st.table(position)
 
             #st.subheader(f'{escolha_parlamentar_do_estado}')
