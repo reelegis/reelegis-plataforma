@@ -102,7 +102,7 @@ if pol_part == 'Político':
             #st.write(lugar.index)
 
             posit = l['posicao'].iloc[0]
-            st.info(f'**{escolha_parlamentar_do_estado} está na {posit}ᵃ posição no *ranking* comparativo.**')
+            st.info(f'**{escolha_parlamentar_do_estado} está na {posit}ᵃ posição no *ranking*.')
             #st.table(position)
 
             #st.subheader(f'{escolha_parlamentar_do_estado}')
@@ -158,7 +158,7 @@ if pol_part == 'Político':
             st.title(f'Ênfase temática apresentada por {escolha_parlamentar_do_estado}')
             estado_parla = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
             # site com as cores: https://plotly.com/python/builtin-colorscales/
-            labels=dict(index="Tema", Tema="Ênfase Temática"), orientation='h')
+            labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
             estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
             st.plotly_chart(estado_parla)
 
