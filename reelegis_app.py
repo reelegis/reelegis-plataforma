@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import numpy
-import pathlib
-from bs4 import BeautifulSoup
-import logging
-import shutil
+#import pathlib
+#from bs4 import BeautifulSoup
+#import logging
+#import shutil
 
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([1,1,20])
