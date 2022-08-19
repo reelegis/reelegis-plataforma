@@ -24,7 +24,7 @@ st.text('Última atualização em 18/08/2022')
 ## base de dados do político
 @st.cache(ttl=60*60*24)
 def load_data():
-    data = pd.read_excel('bd-reelegis-camara-numeros.xlsx', index_col=0)
+    data = pd.read_excel('bd-reelegis-camara.xlsx', index_col=0)
     return data
 
 df = load_data()
@@ -265,7 +265,7 @@ if pol_part == 'Partido':
             last = ppc.iloc[-1]
             st.title('*Ranking* da quantidade de propostas apresentadas pelos Partidos')
             #st.title('*Ranking* da quantidade de propostas apresentadas pelos/as candidatos/as à reeleição')
-            st.info(f'A barra em azul indica a posição do **{escolha_partido_do_estado}** em comparação com os demais partidos que possuem representantes na Câmara Federal da Unidade Federativa **{uf_escolha}** no que se refere à quantidade de propostas apresentadas.')
+            st.info(f'A barra em azul indica a posição do **{escolha_partido_do_estado}** em comparação com os demais partidos que possuem parlamentares na Câmara Federal da Unidade Federativa **{uf_escolha}** no que se refere à quantidade de propostas apresentadas.')
             partido_selecionado = int(per_capita.loc[escolha_partido_do_estado])
             #st.write(partido_selecionado.index[0])
             #st.write(f'{partido_selecionado.to_string(index=False)}')
