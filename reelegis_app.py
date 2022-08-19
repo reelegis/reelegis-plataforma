@@ -24,7 +24,7 @@ st.text('Última atualização em 18/08/2022')
 ## base de dados do político
 @st.cache(ttl=60*60*24)
 def load_data():
-    data = pd.read_excel('bd-reelegis-camara.xlsx', index_col=0)
+    data = pd.read_excel('bd-reelegis-camara-numeros.xlsx', index_col=0)
     return data
 
 df = load_data()
