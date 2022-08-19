@@ -19,7 +19,7 @@ with col2:
 
 st.text("Versão beta 🐟 v.0.0.1")
 
-st.text('Última atualização em 18/08/2022')
+st.text('Última atualização em 19/08/2022')
 
 ## base de dados do político
 @st.cache(ttl=60*60*24)
