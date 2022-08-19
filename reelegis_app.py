@@ -13,7 +13,7 @@ col1, mid, col2 = st.beta_columns([1,1,20])
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
-    st.title("  Reeleger ou renovar?")
+    st.title(".  Reeleger ou renovar?")
 
 #st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
@@ -52,7 +52,7 @@ st.markdown('[Aqui, você pode retornar ao site.](https://reelegis.netlify.app)'
 
 
 st.header('Nessas eleições, você prefere votar no Político ou no Partido para o cargo de Deputado/a Federal?')
-pol_part = st.radio("Escolha uma opção", ['','Político', 'Partido', 'Ainda não decidi'], key='1')
+pol_part = st.radio("Escolha uma opção", ['','Político', 'Partido'], key='1')
 df2 = df[df.nomeUrna != 'Não está concorrendo']
 df2 = df2.dropna()
 if pol_part == 'Político':
@@ -172,7 +172,7 @@ if pol_part == 'Político':
             first = int(perc23.iloc[:1])
             last = perc23.iloc[:-1].round()
 
-            st.info(f'O gráfico acima mostra que entre 2019 e 2022, **{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
+            st.info(f'**{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
 
                 ## conhecer as Propostas
             st.title(f'Conheça as propostas apresentadas por {escolha_parlamentar_do_estado}')
@@ -359,105 +359,7 @@ if pol_part == 'Partido':
             local_css("style.css")
 
 
-if pol_part == 'Ainda não decidi':
-    st.header('Onde você vota?')
-    uf = df2['estado_extenso_eleicao'].unique()
-    uf = np.append(uf, '')
-    uf.sort()
-    uf_escolha = st.selectbox("Selecione o Estado", uf)
-    if uf_escolha != '':
-        tem_state = df2.loc[df2.estado_extenso_eleicao == uf_escolha, :]
-        tem_state_partido = df.loc[df.estado_partido_exercicio == uf_escolha, :]
-        tem = df2['Tema'].unique()
-        tem = np.append(tem, '')
-        tem.sort()
-        st.header('Qual tema você dá mais importância?')
-        tema = st.selectbox("Selecione o tema", tem)
-        if tema != '':
-            random_val = tem_state.loc[tem_state.Tema == tema, :]
-            cand_ideal = random_val.loc[random_val.Tema == tema]
-            random_val_partido = tem_state_partido.loc[tem_state_partido.Tema == tema, :]
-            cand_ideal_partido = random_val_partido.loc[random_val_partido.Tema == tema]
-            ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
-            st.success(ementa.index[0])
-            top_politico = cand_ideal['nomeUrna'].value_counts()
-            toppol = pd.DataFrame(data=top_politico)
-
-            top_partido = cand_ideal_partido['partido_ext_sigla'].value_counts()
-            toppart = pd.DataFrame(data=top_partido)
-            st.subheader(f'Político com maior ênfase temática em **{tema}: {toppol.index[0]}**')
-            st.write(f'Na Unidade Federativa **{uf_escolha}, {toppol.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{toppol.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
-            f = pd.DataFrame(cand_ideal['nomeUrna'])
-            f2 = pd.DataFrame(cand_ideal_partido['partido_ext_sigla'])
-            new = f2.groupby(['partido_ext_sigla']).size()#.groupby(['partido_ext_sigla']).size()
-            g_sum = new.groupby(['partido_ext_sigla']).sum()
-            n = new.groupby(['partido_ext_sigla']).size()
-            per = pd.concat([g_sum, n], axis=1)
-            percapita = per[0]/per[1]
-            per_capita = pd.DataFrame(percapita)
-            per_capita.columns=['Taxa per capita']
-            p = per_capita.sort_values(by=['Taxa per capita'], ascending=False)
-            st.subheader(f'Partido com maior ênfase temática em **{tema}: {p.index[0]}**')
-            st.write(f'Levando em consideração a taxa _por parlamentar_, na Unidade Federativa **{uf_escolha}**, o **{p.index[0]}** foi quem mais apresentou propostas sobre **{tema}**. Em contrapartida, **{p.index[-1]}** foi quem apresentou menos propostas relacionadas a **{tema}**.')
-            st.success(f'A taxa _por parlamentar_ de propostas apresentadas leva em consideração o total de projetos apresentados do partido no tema *{tema}* dividido pela quantidade de seus parlamentares que também apresentaram propostas sobre o mesmo tema. A opção por esta métrica permite tornar os partidos comparáveis com base na quantidade de seus membros, não indicando necessariamente o valor total de projetos que foram apresentados pelo partido. ')
-
-            st.header('📊 Comparativo')
-
-            st.subheader(f'No tema sobre **{tema}, {toppol.index[0]}** apresentou maior ênfase temática que os outros Parlamentares na Unidade Federativa **{uf_escolha}**.')
-            #parlamentar_tema_selecionado = per_capita.loc[escolha_partido_do_estado]
-            t_first = toppol.iloc[:1].round()
-            #tf = pd.DataFrame(data=t_first)
-            #st.write(f'{toppol.index[0]} apresentou {t_first.to_string(index=False)} propostas sobre {tema}.')
-
-            #contagem_parlamentares = t_first.groupby(t_first.nomeUrna.tolist(),as_index=False).size()
-#st.table(contagem_parlamentares)
-
-#st.table(perc)
-            condicao_split_parlamentar = len(toppol.index)
-
-            if condicao_split_parlamentar > 37:
-                fig_político=px.bar(toppol, height=1500, width=900, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
-                fig_político["data"][0]["marker"]["color"] = ["blue" if c == toppol.index[0] else "#C0C0C0" for c in fig_político["data"][0]["y"]]
-                fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-                st.plotly_chart(fig_político)
-
-            else:
-
-                fig_político=px.bar(toppol, height=600, width=700, labels=dict(index="Político", value=f'Quantidade de propostas apresentadas sobre {tema}'), orientation='h')
-                fig_político["data"][0]["marker"]["color"] = ["blue" if c == toppol.index[0] else "#C0C0C0" for c in fig_político["data"][0]["y"]]
-                fig_político.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-                st.plotly_chart(fig_político)
-
-
-                st.subheader(f'No tema sobre {tema}, o {p.index[0]} apresentou maior ênfase temática que os outros Partidos na Unidade Federativa {uf_escolha}')
-            #st.write(f'O {p.index[0]} apresentou em média  propostas legislativas sobre {tema} por Parlamentar.')
-            fig_partido=px.bar(p, height=600, width=700, labels=dict(partido_ext_sigla="", value='Taxa por parlamentar'), orientation='h')
-            fig_partido["data"][0]["marker"]["color"] = ["blue" if c == p.index[0] else "#C0C0C0" for c in fig_partido["data"][0]["y"]]
-            fig_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(fig_partido)
-
-
-            st.header('📢  Conta pra gente!')
-            st.warning('Fique à vontade para nos informar sobre algo que queria ter visto nesta aba ou sobre a plataforma, para melhorarmos no futuro!')
-            contact_form = """
-            <form action="https://formsubmit.co/reelegis@gmail.com" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="name" placeholder="Nome" required>
-            <input type="email" name="email" placeholder="E-mail" required>
-            <textarea name="message" placeholder="Sua mensagem"></textarea>
-            <button type="submit">Enviar</button>
-            </form>
-            """
-            st.markdown(contact_form, unsafe_allow_html=True)
-
-            def local_css(file_name):
-                with open(file_name) as f:
-                    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-            local_css("style.css")
-
-
-            #st.table(topmin)
-            
+ 
 
 def inject_ga():
     GA_ID = "google_analytics"
