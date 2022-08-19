@@ -3,3 +3,7 @@ pandas>=0.25.3
 numpy>=1.18.1
 plotly_express>=0.4.1
 openpyxl>=3.0.7
+pathlib==1.0.1
+BeautifulSoup==4.9.3
+logging==0.4.9.6
+shutil==1.7.0
