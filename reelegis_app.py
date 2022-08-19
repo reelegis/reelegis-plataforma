@@ -369,13 +369,13 @@ def inject_ga():
 
     GA_JS = """
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VS57P3XG4T"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-29VXXE2E33"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-VS57P3XG4T');
+        gtag('config', 'G-29VXXE2E33');
     </script>
     """
 
