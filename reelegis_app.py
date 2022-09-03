@@ -120,8 +120,16 @@ if pol_part == 'Político':
             x=split1000(bens_posteriores)
 
             y = x[:-4] + x[-3:]
+            
+            if y == '0,00':
+                y='Ainda não declarado'
+                real = ''
+            else:
+                real = 'R$'
+                
             sex = pd.DataFrame(data=f_par23['sexo'].value_counts())
             sexo = sex['sexo']
+          
 
 
             #file_path = os.path.join(foto_pa)
@@ -133,7 +141,7 @@ if pol_part == 'Político':
                 st.success(f"""
                             * ✅ Número de urna: **{n0}**
                             * 👤 Cor/raça: **{cor}**
-                            * 💰 Patrimônio declarado: **R$ {y}**
+                            * 💰 Patrimônio declarado: **{real} {y}**
                             * 💼 Profissão: **{trabalho}**
                             """)
 
