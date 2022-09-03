@@ -9,8 +9,7 @@ import logging
 import shutil
 from pathlib import Path
 
-with st.spinner("Aguarde um momento..."):
-    do_something_slow()
+
     
 
 # source venv/bin/activate
