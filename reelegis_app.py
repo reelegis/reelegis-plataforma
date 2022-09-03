@@ -141,7 +141,7 @@ if pol_part == 'Político':
 
             #st.subheader(f'Em comparação com os outros parlamentares de {uf_escolha}, {escolha_parlamentar_do_estado}')
             ## grafico destacado aqui!
-            st.title('*Ranking* da quantidade de propostas apresentadas pelos/as candidatos/as à reeleição')
+            st.title('*Ranking* da quantidade de propostas apresentadas por dia de mandato pelos/as candidatos/as à reeleição')
             st.info(f'No gráfico a seguir, a barra em azul indica a posição de **{escolha_parlamentar_do_estado}** em comparação com os demais deputados federais em cinza da Unidade Federativa **{uf_escolha}** no que se refere à média de propostas apresentadas por dias de mandato.')
 
 
