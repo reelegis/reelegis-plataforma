@@ -1,3 +1,14 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import numpy
+import pathlib
+from bs4 import BeautifulSoup
+import logging
+import shutil
+from pathlib import Path
+
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([4,1,20])
 with col1:
