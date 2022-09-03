@@ -9,6 +9,10 @@ import logging
 import shutil
 from pathlib import Path
 
+for i in range(101):
+    st.progress(i)
+    
+
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([4,1,20])
 
