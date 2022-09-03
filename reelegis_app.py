@@ -115,7 +115,7 @@ if pol_part == 'Político':
             cor = cor_raca.iloc[0]
             profissao = f_par23['Profissao']
             trabalho = profissao.iloc[0]
-            party = f_par23['partido_ext_sigla'].iloc[0]
+            #party = f_par23['partido_ext_sigla'].iloc[0]
             bens_depois = f_par23['patrimonio_depois'].iloc[0]
             bens_posteriores = str(bens_depois.replace('.',','))
             def split1000(s, sep='.'):
