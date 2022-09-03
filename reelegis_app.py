@@ -1,32 +1,21 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import numpy
-import pathlib
-from bs4 import BeautifulSoup
-import logging
-import shutil
-from pathlib import Path
-
 # source venv/bin/activate
-col1, mid, col2 = st.beta_columns([1,1,20])
+col1, mid, col2 = st.beta_columns([4,1,20])
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
-    st.title(".   Reeleger ou renovar?")
+    st.title("Reeleger ou renovar?")
 
 #st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
-st.text("Versão beta 🐟 v.0.0.1")
+st.text("Versão beta 🐟 v.0.0.2")
 
-st.text('Última atualização em 19/08/2022')
+st.text('Última atualização em 02/09/2022')
 
 ## base de dados do político
 #@st.cache(ttl=60*60*24)
-@st.cache
+@st.cache(ttl=60*60*24)
 def load_data():
-    data = pd.read_excel('bd-reelegis-camara.xlsx', index_col=0)
+    data = pd.read_excel('[atualizacao]bd-reelegis-camara.xlsx', index_col=0)
     return data
 
 df = load_data()
@@ -82,11 +71,64 @@ if pol_part == 'Político':
                     #c = sum(contar)
                     #contar = contar/sum()
                     # filter_partido_proposi2 = f_par2.loc[f_par.autor_partido == choice_dep]
+            gen_uf = pd.DataFrame(data=f_par23['genero'].value_counts())
+            genero = gen_uf['genero']
+
+            if genero.index[0] == 'o Deputado':
+                elu_delu = 'Ele'
+            else:
+                elu_delu = 'Ela'
+
+            foto = f_par23['fotos'].iloc[0]
+            #foto = foto.to_string()
+
+            #foto_parlamentar = foto
+            foto_pa = str(foto)
+            #str_path = "foto_parlamentar"
+            #path = Path(foto_pa)
+            #file_path = os.path.join(foto_pa)
+
+            str_path = foto
+
+            path = Path(str_path)
+            numero = f_par23['numero']
+            n = numero.iloc[0]
+            n0 = int(n)
+            cor_raca = f_par23['cor_raca']
+            cor = cor_raca.iloc[0]
+            profissao = f_par23['Profissao']
+            trabalho = profissao.iloc[0]
+            party = f_par23['partido_ext_sigla'].iloc[0]
+            bens_depois = f_par23['patrimonio_depois'].iloc[0]
+            bens_posteriores = str(bens_depois.replace('.',','))
+            def split1000(s, sep='.'):
+                return s if len(s) <= 3 else split1000(s[:-3], sep) + sep + s[-3:]
+            x=split1000(bens_posteriores)
+
+            y = x[:-4] + x[-3:]
+            sex = pd.DataFrame(data=f_par23['sexo'].value_counts())
+            sexo = sex['sexo']
+
+
+            #file_path = os.path.join(foto_pa)
+            gol, mid, gol2 = st.beta_columns([5,1,20])
+            with gol:
+                st.image(str_path, width=120)
+            with gol2:
+                #st.success(f'Número de urna: **{n0}** Cor/raça: **{cor}**.')
+                st.success(f"""
+                            * ✅ Número de urna: **{n0}**
+                            * 🏛️ Partido: **{party}**
+                            * 👤 Cor/raça: **{cor}**
+                            * 💰 Patrimônio declarado: **R$ {y}**
+                            * 💼 Profissão: **{trabalho}**
+                            """)
+
 
             #st.subheader(f'Em comparação com os outros parlamentares de {uf_escolha}, {escolha_parlamentar_do_estado}')
             ## grafico destacado aqui!
             st.title('*Ranking* da quantidade de propostas apresentadas pelos/as candidatos/as à reeleição')
-            st.info(f'No gráfico a seguir, a barra em azul indica a posição de **{escolha_parlamentar_do_estado}** em comparação com os demais deputados federais em cinza da Unidade Federativa **{uf_escolha}** no que se refere à quantidade das propostas apresentadas.')
+            st.info(f'No gráfico a seguir, a barra em azul indica a posição de **{escolha_parlamentar_do_estado}** em comparação com os demais deputados federais em cinza da Unidade Federativa **{uf_escolha}** no que se refere à média de propostas apresentadas por dias de mandato.')
 
 
             #perc['posicao'] =
@@ -103,25 +145,89 @@ if pol_part == 'Político':
             #st.table(lugar)
             #st.write(lugar.index)
 
-            posit = l['posicao'].iloc[0]
-            st.info(f'**{escolha_parlamentar_do_estado}** está na {posit}ᵃ posição no *ranking*.')
+            #posit = l['posicao'].iloc[0]
+            #st.info(f'**{escolha_parlamentar_do_estado}** está na {posit}ᵃ posição no *ranking*.')
             #st.table(position)
 
             #st.subheader(f'{escolha_parlamentar_do_estado}')
             contagem_parlamentares = f.groupby(f.nomeUrna.tolist(),as_index=False).size()
 
             #st.table(contagem_parlamentares)
+            f2 = pd.DataFrame(f_par2[['nomeUrna', 'dias_total']])
+            urna_names = f2.groupby(['nomeUrna']).size()
+            #dias_contados = f2.groupby(['nomeUrna', 'dias_total']).size()
+
+            dias_nome = pd.DataFrame(f_par2, columns = ['nomeUrna', 'dias_total'])
+            #g=dias_nome.groupby('nomeUrna').agg(set)
+
+            g = dias_nome.groupby('nomeUrna')['dias_total'].apply(lambda x: float(np.unique(x)))
+            #g = dias_nome.groupby('nomeUrna')['dias_total'].nunique()
+            d = pd.concat([g, urna_names], axis=1)
+            dias = pd.DataFrame(d)
+            #percapita = dias['dias_total']/2
+            #dias['dias_total'].astype(int)
+
+            #percapita = dias['dias_total']/dias[0]
+
+            #percapita_dias = dias['dias_total']
+
+            #dias['dias_total'] = dias['dias_total'].astype(float)
+            result = dias[0]/dias['dias_total']
+            #pts = pd.concat([dias[0], result], axis=1)
+            r = pd.DataFrame(result)
+            #st.table(result)
+            r[0] = r[0].rank(ascending=False)
+            #re = r[0]
+
+            posit = r.loc[r.index == escolha_parlamentar_do_estado, :]
+            p = round(posit.iloc[0], 1)
+
+            d = p//1
+
+            d0 = int(d)
+            #st.table(p)
+            st.info(f'**{escolha_parlamentar_do_estado}** está na **{d0}ᵃ** posição no *ranking*.')
+            #st.text(type(result))
+            #st.text(percapita)
+
+
+            #dias_contados = f2.groupby('nomeUrna')['dias_total'].nunique()
+
+            #urna = pd.DataFrame(dias_contados, columns = ['nomeUrna'])
+            #urna.columns=['n_materias']
+            #g_sum2 = new2.groupby(['dias_total'])
+            #st.table(result)
 
             #st.table(perc)
             condicao_split_parlamentar = len(contagem_parlamentares.index)
+            f2 = pd.DataFrame(f_par2[['nomeUrna', 'dias_total']])
+            urna_names = f2.groupby(['nomeUrna']).size()
+            #dias_contados = f2.groupby(['nomeUrna', 'dias_total']).size()
+
+            dias_nome = pd.DataFrame(f_par2, columns = ['nomeUrna', 'dias_total'])
+            #g=dias_nome.groupby('nomeUrna').agg(set)
+
+            g = dias_nome.groupby('nomeUrna')['dias_total'].apply(lambda x: float(np.unique(x)))
+            #g = dias_nome.groupby('nomeUrna')['dias_total'].nunique()
+            d = pd.concat([g, urna_names], axis=1)
+            dias = pd.DataFrame(d)
+            #percapita = dias['dias_total']/2
+            #dias['dias_total'].astype(int)
+
+            #percapita = dias['dias_total']/dias[0]
+
+            #percapita_dias = dias['dias_total']
+
+            #dias['dias_total'] = dias['dias_total'].astype(float)
+            result2 = dias[0]/dias['dias_total']
             if condicao_split_parlamentar > 29:
                 #parl_dep = px.bar(perc, x='nomeUrna', height=1500, width=900,
                 #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
-                fig1=px.bar(perc, height=1500, width=900, labels=dict(index="", value='Quantidade de propostas apresentadas'), orientation='h')
+                fig1=px.bar(result2, height=1500, labels=dict(index="", value='Quantidade de propostas apresentadas'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["blue" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
                 fig1.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-                st.plotly_chart(fig1)
+                st.plotly_chart(fig1, use_container_width=True)
 
                 first = perc.iloc[:1].round()
                 #st.info(f'Na Unidade Federativa {uf_escolha}, {perc.index[0]} foi quem mais apresentou propostas legislativas entre 2019 e 2022, com {first.to_string(index=False)} apresentadas até o dia 18 de julho de 2022.')
@@ -147,15 +253,36 @@ if pol_part == 'Político':
                 #parl_dep = px.bar(perc, x='nomeUrna', height=600, width=700,
                 #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
-                fig1=px.bar(perc, height=600, width=700, labels=dict(index="", value='Quantidade de propostas apresentadas'), orientation='h')
+                fig1=px.bar(result2, height=600, labels=dict(nomeUrna="", value='Propostas por Dia'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["blue" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
                 fig1.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-                st.plotly_chart(fig1)
+                st.plotly_chart(fig1, use_container_width=True)
 
                 first = perc.iloc[:1].round()
                 #st.info(f'Na Unidade Federativa {uf_escolha}, {perc.index[0]} foi quem mais apresentou propostas legislativas entre 2019 e 2022, com {first.to_string(index=False)} apresentadas até o dia 18 de julho de 2022.')
                 #st.info('Caso queira visualizar a tabela descritiva do gráfico, clique abaixo.')
+            re2 = pd.DataFrame(result2)
+            #dias_mandato
+            posit2 = re2.loc[re2.index == escolha_parlamentar_do_estado, :]
+            #dias_mandato = dias.loc[dias.index==escolha_parlamentar_do_estado, :]
+            #di[0]=dias_mandato['dias_total']
+            dias_mandado = f_par23['dias_total'].unique()
+            days = f_par23['dias_total'].iloc[0]
+            ndays = float(days)
+            dm=int(ndays)
+            #ndias = dias_mandado.iloc[0]
+            #ndays = int(ndias)
+            #out_arr = np.array_str(dias_mandado)
+            p2 = round(posit2.iloc[0], 3)
+            n_proposta_uf = f_par23.index
+            n_proposta_uf = len(n_proposta_uf)
+            df_uf = pd.DataFrame(data=f_par23['Tema'].value_counts())
+            df_uf['Tema'] = pd.to_numeric(df_uf['Tema'])
+            saliente_uf = df_uf['Tema']
+            first = int(perc23.iloc[:1])
+            last = perc23.iloc[:-1].round()
 
+            st.info(f'**{escolha_parlamentar_do_estado}** apresentou, *em média*, **{p2.to_string(index=False)}** propostas por dia. Um total de **{str(n_proposta_uf)}** propostas legislativas em **{dm}** dias de mandato parlamentar.')
 
             st.title(f'Ênfase temática apresentada por {escolha_parlamentar_do_estado}')
             estado_parla = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
@@ -164,15 +291,7 @@ if pol_part == 'Político':
             estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
             st.plotly_chart(estado_parla)
 
-            n_proposta_uf = f_par23.index
-            n_proposta_uf = len(n_proposta_uf)
-            df_uf = pd.DataFrame(data=f_par23['Tema'].value_counts())
-            df_uf['Tema'] = pd.to_numeric(df_uf['Tema'])
-            saliente_uf = df_uf['Tema']
-            gen_uf = pd.DataFrame(data=f_par23['genero'].value_counts())
-            genero = gen_uf['genero']
-            first = int(perc23.iloc[:1])
-            last = perc23.iloc[:-1].round()
+
 
             st.info(f'**{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
 
@@ -198,6 +317,27 @@ if pol_part == 'Político':
                 st.write(f'*Esta é uma proposta apresentada por* **{escolha_parlamentar_do_estado}** que trata **{random_tema}**.')
                 # A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                 st.success(ementa_maior)
+
+            #st.title(f"Declaração de bens de {escolha_parlamentar_do_estado}")
+            #ano_anterior = 2018
+            #ano_eleitoral = 2022
+            #bens_antes = f_par23['patrimonio_antes'].iloc[0]
+            #bens_anteriores = float(bens_antes)
+            #bens_depois = f_par23['patrimonio_depois'].iloc[0]
+            #bens_posteriores = float(bens_depois)
+
+            #patrimonio = pd.DataFrame(dict(
+            #ano = [ano_anterior, ano_eleitoral],
+            #declarado = [bens_anteriores, bens_posteriores]
+            #))
+            #patri_bens = px.line(patrimonio, x="ano", y="declarado", text="declarado", labels=dict(declarado="R$", ano='Ano'))
+            #patri_bens.update_traces(textposition='top center')
+            #patri_bens.update_traces(mode='lines')
+            #patri_bens.data[0].line.color = "#0000ff"
+            #st.plotly_chart(patri_bens)
+
+
+
                     #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
             st.header('📢  Conta pra gente!')
             st.warning('Fique à vontade para nos informar sobre algo que queria ter visto nesta aba ou sobre a plataforma, para melhorarmos no futuro!')
@@ -252,6 +392,9 @@ if pol_part == 'Partido':
             percapita = per[0]/per[1]
             per_capita = pd.DataFrame(percapita)
             per_capita.columns=['Taxa per capita']
+
+
+
             #f_par23 = f_par2.loc[f_par2.partido_ext_sigla == escolha_partido_do_estado, :]
             #st.write(partido_selecionado)
             #st.table(per_capita)
