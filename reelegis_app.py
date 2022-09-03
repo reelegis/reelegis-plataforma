@@ -11,6 +11,8 @@ from pathlib import Path
 
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([4,1,20])
+st.image('2-removebg-preview.png', width=99)
+
 with col1:
     st.image('1-removebg-preview.png', width=99)
 with col2:
