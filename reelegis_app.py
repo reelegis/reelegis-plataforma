@@ -303,7 +303,7 @@ if pol_part == 'Político':
             # site com as cores: https://plotly.com/python/builtin-colorscales/
             labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
             estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(estado_parla)
+            st.plotly_chart(estado_parla, use_container_width=True)
 
 
 
@@ -441,10 +441,10 @@ if pol_part == 'Partido':
 
 
             #st.header(f'Taxa _per capita_ de propostas apresentadas pelo {escolha_partido_do_estado} na Unidade Federativa {uf_escolha}')
-            fig_partido=px.bar(per_capita, height=600, width=700, labels=dict(partido_ext_sigla="", value='Taxa por parlamentar'), orientation='h')
+            fig_partido=px.bar(per_capita, height=600, labels=dict(partido_ext_sigla="", value='Taxa por parlamentar'), orientation='h')
             fig_partido["data"][0]["marker"]["color"] = ["blue" if c == escolha_partido_do_estado else "#C0C0C0" for c in fig_partido["data"][0]["y"]]
             fig_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(fig_partido)
+            st.plotly_chart(fig_partido, use_container_width=True)
 
 
             #estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
@@ -462,7 +462,7 @@ if pol_part == 'Partido':
             # site com as cores: https://plotly.com/python/builtin-colorscales/
             labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
             estado_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(estado_partido)
+            st.plotly_chart(estado_partido, use_container_width=True)
 
             n_proposta_uf = f_par23.index
             n_proposta_uf = len(n_proposta_uf)
