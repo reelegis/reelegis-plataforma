@@ -135,7 +135,6 @@ if pol_part == 'Político':
                 #st.success(f'Número de urna: **{n0}** Cor/raça: **{cor}**.')
                 st.success(f"""
                             * ✅ Número de urna: **{n0}**
-                            * 🏛️ Partido: **{party}**
                             * 👤 Cor/raça: **{cor}**
                             * 💰 Patrimônio declarado: **R$ {y}**
                             * 💼 Profissão: **{trabalho}**
