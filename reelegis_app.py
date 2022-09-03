@@ -7,6 +7,7 @@ import pathlib
 from bs4 import BeautifulSoup
 import logging
 import shutil
+from pathlib import Path
 
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([1,1,20])
