@@ -1,7 +1,4 @@
 import streamlit as st
-import time
-with st.spinner('Aguarde um momento...'):
-    time.sleep(5)
 import pandas as pd
 import numpy as np
 import plotly.express as px
