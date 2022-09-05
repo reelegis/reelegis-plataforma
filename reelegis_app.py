@@ -1,6 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
-components.html('<label>Carregando a plataforma e atualizando dados <progress></progress></label>')
 
 import pandas as pd
 import numpy as np
