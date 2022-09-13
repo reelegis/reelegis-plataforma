@@ -254,7 +254,7 @@ if pol_part == 'Político':
                 #parl_dep = px.bar(perc, x='nomeUrna', height=1500, width=900,
                 #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
-                fig1=px.bar(result2, height=1500, labels=dict(index="", value='Quantidade de propostas apresentadas'), orientation='h')
+                fig1=px.bar(result2, height=1500, labels=dict(nomeUrna="", value='Quantidade de propostas apresentadas'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["blue" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
                 fig1.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
                 st.plotly_chart(fig1, use_container_width=True)
