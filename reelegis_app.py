@@ -12,29 +12,29 @@ from pathlib import Path
 
 # source venv/bin/activate
 col1, mid, col2 = st.beta_columns([4,1,20])
+
+
 with col1:
     st.image('1-removebg-preview.png', width=99)
+    #st.image('2-removebg-preview.png', width=99)
 with col2:
     st.title("Reeleger ou renovar?")
 
 #st.text('Aqui você escolhe o seu/sua Deputado/a Federal!')
 
-st.text("Versão beta 🐟 v.0.0.3")
+st.text("Versão beta 🐟 v.0.0.2")
 
-st.text('Última atualização em 13/09/2022')
+st.text('Última atualização em 02/09/2022')
 
 ## base de dados do político
 #@st.cache(ttl=60*60*24)
-#@st.cache(ttl=3600*24)
+#@st.cache(ttl=60*60*24)
 @st.cache(ttl=60*60)
-#@st.cache(ttl=60*5,max_entries=20)
-
 def load_data():
     data = pd.read_excel('[atualizacao]bd-reelegis-camara-CORRIGIDO.xlsx', index_col=0)
     return data
 
 df = load_data()
-df_party = load_data()
 
 #df = df.dropna() #lida com todos os espacos vazios dos dados
 
@@ -114,25 +114,16 @@ if pol_part == 'Político':
             cor = cor_raca.iloc[0]
             profissao = f_par23['Profissao']
             trabalho = profissao.iloc[0]
-            party = f_par23['partido_ext_sigla'].iloc[0]
+            #party = f_par23['partido_ext_sigla'].iloc[0]
             bens_depois = f_par23['patrimonio_depois'].iloc[0]
             bens_posteriores = str(bens_depois.replace('.',','))
-
-
             def split1000(s, sep='.'):
                 return s if len(s) <= 3 else split1000(s[:-3], sep) + sep + s[-3:]
             x=split1000(bens_posteriores)
 
-
-
             y = x[:-4] + x[-3:]
+
             if y == '0,00':
-                y='Ainda não declarado'
-                real = ''
-            if y == '0,0':
-                y='Ainda não declarado'
-                real = ''
-            if y == '0':
                 y='Ainda não declarado'
                 real = ''
             else:
@@ -142,22 +133,24 @@ if pol_part == 'Político':
             sexo = sex['sexo']
 
 
+
             #file_path = os.path.join(foto_pa)
             gol, mid, gol2 = st.beta_columns([5,1,20])
             with gol:
                 st.image(str_path, width=120)
             with gol2:
+                #st.success(f'Número de urna: **{n0}** Cor/raça: **{cor}**.')
                 st.success(f"""
-                    * ✅ Número de urna: **{n0}**
-                    * 👤 Cor/raça: **{cor}**
-                    * 💰 Patrimônio declarado: **{real} {y}**
-                    * 💼 Profissão: **{trabalho}**
-                    """)
+                            * ✅ Número de urna: **{n0}**
+                            * 👤 Cor/raça: **{cor}**
+                            * 💰 Patrimônio declarado: **{real} {y}**
+                            * 💼 Profissão: **{trabalho}**
+                            """)
 
 
             #st.subheader(f'Em comparação com os outros parlamentares de {uf_escolha}, {escolha_parlamentar_do_estado}')
             ## grafico destacado aqui!
-            st.title('*Ranking* da quantidade de propostas apresentadas pelos/as candidatos/as à reeleição')
+            st.title('*Ranking* da quantidade de propostas apresentadas por dia de mandato pelos/as candidatos/as à reeleição')
             st.info(f'No gráfico a seguir, a barra em azul indica a posição de **{escolha_parlamentar_do_estado}** em comparação com os demais deputados federais em cinza da Unidade Federativa **{uf_escolha}** no que se refere à média de propostas apresentadas por dias de mandato.')
 
 
@@ -254,7 +247,7 @@ if pol_part == 'Político':
                 #parl_dep = px.bar(perc, x='nomeUrna', height=1500, width=900,
                 #labels=dict(index="Parlamentar", nomeUrna="% Propostas apresentadas"),
                 #orientation='h')
-                fig1=px.bar(result2, height=1500, labels=dict(nomeUrna="", value='Quantidade de propostas apresentadas'), orientation='h')
+                fig1=px.bar(result2, height=1500, labels=dict(nomeUrna="", value='Propostas por Dia'), orientation='h')
                 fig1["data"][0]["marker"]["color"] = ["blue" if c == escolha_parlamentar_do_estado else "#C0C0C0" for c in fig1["data"][0]["y"]]
                 fig1.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
                 st.plotly_chart(fig1, use_container_width=True)
@@ -315,84 +308,27 @@ if pol_part == 'Político':
             st.info(f'**{escolha_parlamentar_do_estado}** apresentou, *em média*, **{p2.to_string(index=False)}** propostas por dia. Um total de **{str(n_proposta_uf)}** propostas legislativas em **{dm}** dias de mandato parlamentar.')
 
             st.title(f'Ênfase temática apresentada por {escolha_parlamentar_do_estado}')
-
-            ### AQUI VEM A BASE DA ÊNFASE!!
-
-            def load_enfase():
-                data_enfase = pd.read_excel('enfase-tematica-bd-cand.xlsx')
-                return data_enfase
-
-            enfase = load_enfase()
-            enf_tematica_deputado = enfase.loc[enfase.nomeUrna == escolha_parlamentar_do_estado, :]
-
-            ### POSTS CANVA INSTAGRAM ###
-            #def load_enfase_post():
-            #    data_enfase_post = pd.read_excel('media-estados-POST.xlsx')
-            #    return data_enfase_post
-
-            #enfase_post = load_enfase_post()
-            #enf_tematica_post_estado = enfase_post.loc[enfase_post.estado == uf_escolha, :]
-            #enfase_grafico_POST = enf_tematica_post_estado[['label_pt', 'media_label']]
-            #enfase_grafico_POST.media_label = enfase_grafico_POST.media_label * 100
-            #estado_parla_POST = px.bar(enfase_grafico_POST, x='media_label', y='label_pt', height=500, color='media_label',
-            #color_continuous_scale=px.colors.sequential.Viridis,
-            #color_continuous_scale='Sunsetdark',
+            estado_parla = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
             # site com as cores: https://plotly.com/python/builtin-colorscales/
-            #labels=dict(label_pt="", media_label="Ênfase Temática %"), orientation='h')
-            #estado_parla_POST.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            #st.plotly_chart(estado_parla_POST)
-
-
-            #st.table(enf_tematica_deputado)
-            enfase_grafico = enf_tematica_deputado[['label_pt', 'prop_mean']]
-
-            enfase_grafico.prop_mean = enfase_grafico.prop_mean * 100
-            #st.table(enfase_grafico)
-            estado_parla = px.bar(enfase_grafico, x='prop_mean', y='label_pt', height=500, color='prop_mean',
-            #color_continuous_scale=px.colors.sequential.Viridis,
-            color_continuous_scale='Sunsetdark',
-            # site com as cores: https://plotly.com/python/builtin-colorscales/
-            labels=dict(label_pt="", prop_mean="Ênfase Temática %"), orientation='h')
+            labels=dict(index="", Tema="Ênfase Temática %"), orientation='h')
             estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
             st.plotly_chart(estado_parla, use_container_width=True)
 
-            #p2 = round(posit2.iloc[0], 3)
-            #n_proposta_uf = enf_tematica_deputado.index
-            #n_proposta_uf = len(n_proposta_uf)
-
-            #sorteio = random_val.loc[random_val.label_pt == random_tema]
-            maior_enfase = pd.DataFrame(enf_tematica_deputado[['label_pt', 'prop_mean']]).sort_values(by = ['prop_mean'],
-            ascending=False)
-            #first = maior_enfase.iloc[:-1].round()
-
-            #maior_enfase_label = maior_enfase.iloc[0]
-            maior_enfase_percent = maior_enfase.iloc[:1]
-            rotulo = maior_enfase_percent['label_pt'].iloc[:1]
-            porcentagem = int(maior_enfase_percent['prop_mean'].iloc[:1] * 100)
-            #st.write(maior_enfase_label)
 
 
+            st.info(f'**{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
 
-            #st.info(f'**{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
-            st.info(f'O tema de maior ênfase média nas propostas apresentadas pel{genero.index[0]} **{escolha_parlamentar_do_estado}** é **{rotulo.to_string(index=False)}**, com **{porcentagem}%** do total.')
-            #st.info(f'{escolha_parlamentar_do_estado} obteve maior ênfase temática em **{rotulo.to_string(index=False)}**, com **{porcentagem}%**.')
                 ## conhecer as Propostas
             st.title(f'Conheça as propostas apresentadas por {escolha_parlamentar_do_estado}')
-
-            def load_ementa():
-                data_ementa = pd.read_excel('ementas.xlsx')
-                return data_ementa
-            inteiro_teor = load_ementa()
-            localizar_parlamentar = inteiro_teor.loc[inteiro_teor.nomeUrna == escolha_parlamentar_do_estado, :]
                 #st.checkbox('Consultar propostas apresentadas deste Parlamentar por tema', False):
-            tema = localizar_parlamentar['label_pt'].unique()
+            tema = f_par23['Tema'].unique()
             tema = np.append(tema, '')
             tema.sort()
             random_tema = st.radio("Escolha o Tema", tema)
             if random_tema != '':
-                random_val = localizar_parlamentar.loc[localizar_parlamentar.label_pt == random_tema, :]
-                sorteio = random_val.loc[random_val.label_pt == random_tema]
-                maior = pd.DataFrame(sorteio[['ementa', 'prop']]).max()
+                random_val = f_par23.loc[f_par23.Tema == random_tema, :]
+                sorteio = random_val.loc[random_val.Tema == random_tema]
+                maior = pd.DataFrame(sorteio[['ementa', 'maior_prob']]).max()
                 ementa_maior=maior.iloc[0]
                 probabilidade_maior=int((maior.iloc[1] * 100))
                     #st.write(probabilidade_maior)
@@ -402,7 +338,7 @@ if pol_part == 'Político':
                 ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                 st.write(ementa.index[0])
                 st.write(f'*Esta é uma proposta apresentada por* **{escolha_parlamentar_do_estado}** que trata **{random_tema}**.')
-                 #A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
+                # A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.
                 st.success(ementa_maior)
 
             #st.title(f"Declaração de bens de {escolha_parlamentar_do_estado}")
@@ -444,8 +380,6 @@ if pol_part == 'Político':
                     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
             local_css("style.css")
 
-
-
 if pol_part == 'Partido':
     st.header('Onde você vota?')
     df = df.dropna()
@@ -454,23 +388,14 @@ if pol_part == 'Partido':
     uf.sort()
     uf_escolha = st.selectbox("Selecione o Estado", uf)
     if uf_escolha != '':
-        f_par2 = df_party.loc[df_party.estado_partido_exercicio == uf_escolha, :]
+        f_par2 = df.loc[df.estado_partido_exercicio == uf_escolha, :]
         f = pd.DataFrame(f_par2)
         perc = f.nomeUrna.value_counts() #/ len(f) * 100
         partido_do_estado = f_par2['partido_ext_sigla'].unique()
         partido_do_estado = np.append(partido_do_estado, '')
         partido_do_estado.sort()
-        #st.table(partido_do_estado)
         st.subheader('Qual partido você gostaria de visualizar?')
         escolha_partido_do_estado = st.selectbox("Selecione o partido", partido_do_estado)
-        #f233 = pd.DataFrame(f_par2)
-                #f.nomeUrna = f.nomeUrna.astype('string')
-        #perc233 = f233.Tema.value_counts() / len(f233) * 100
-        #estado_partido = px.bar(perc233, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
-        # site com as cores: https://plotly.com/python/builtin-colorscales/
-        #labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
-        #estado_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-        #st.plotly_chart(estado_partido, use_container_width=True)
         #st.error(f'Alguns partidos podem não ter sido eleitos na Unidade Federativa {uf_escolha}.')
         if escolha_partido_do_estado != '':
             f_par23 = f_par2.loc[f_par2.partido_ext_sigla == escolha_partido_do_estado, :]
@@ -528,7 +453,7 @@ if pol_part == 'Partido':
             fig_partido=px.bar(per_capita, height=600, labels=dict(partido_ext_sigla="", value='Taxa por parlamentar'), orientation='h')
             fig_partido["data"][0]["marker"]["color"] = ["blue" if c == escolha_partido_do_estado else "#C0C0C0" for c in fig_partido["data"][0]["y"]]
             fig_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(fig_partido,use_container_width=True)
+            st.plotly_chart(fig_partido, use_container_width=True)
 
 
             #estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
@@ -542,76 +467,34 @@ if pol_part == 'Partido':
             #é o {ppc.index[0]}, com {first.to_string(index=False)}. Isso indica que, em média, 1 parlamentar deste partido apresentou {first.to_string(index=False)} propostas. Em contrapartida, o {ppc.index[-1]} é o partido que menos apresentou propostas, com {last.to_string(index=False)} de taxa _per capita_ no Estado selecionado.')
 
             st.title(f'Ênfase temática apresentada por {escolha_partido_do_estado}')
-
-
-            ### AQUI VEM A BASE DA ÊNFASE!!
-
-            def load_enfase():
-                data_enfase = pd.read_excel('enfase-tematica-partidos.xlsx')
-                return data_enfase
-
-            enfase = load_enfase()
-            enf_tematica_deputado = enfase.loc[enfase.estado == uf_escolha, :]
-            enfase_partidos = enf_tematica_deputado.loc[enf_tematica_deputado.partido_extenso == escolha_partido_do_estado, :]
-            #st.table(enf_tematica_deputado)
-            enfase_grafico = enfase_partidos[['label_pt', 'prop_mean']]
-
-
-            enfase_grafico.prop_mean = enfase_grafico.prop_mean * 100
-            #st.table(enfase_grafico)
-            estado_parla = px.bar(enfase_grafico, x='prop_mean', y='label_pt', height=500, color='prop_mean',
-            #color_continuous_scale=px.colors.sequential.Viridis,
-            color_continuous_scale='Sunsetdark',
+            estado_partido = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
             # site com as cores: https://plotly.com/python/builtin-colorscales/
-            labels=dict(label_pt="", prop_mean="Ênfase Temática %"), orientation='h')
-            estado_parla.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(estado_parla, use_container_width=True)
+            labels=dict(index="", Tema="Ênfase Temática %"), orientation='h')
+            estado_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
+            st.plotly_chart(estado_partido, use_container_width=True)
+
+            n_proposta_uf = f_par23.index
+            n_proposta_uf = len(n_proposta_uf)
+            df_uf = pd.DataFrame(data=f_par23['Tema'].value_counts())
+            saliente_uf = df_uf['Tema']
+            first = int(perc23.iloc[:1])
+            last = perc23.iloc[:-1].round()
 
 
+            st.info(f'O **{escolha_partido_do_estado}** apresentou **um total de {str(n_proposta_uf)}** propostas legislativas pela Unidade Federativa **{uf_escolha}**. A maior ênfase temática foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total**.')
 
-
-            #estado_partido = px.bar(perc23, x='Tema', height=500,color='Tema',color_continuous_scale='Sunsetdark',
-            # site com as cores: https://plotly.com/python/builtin-colorscales/
-            #labels=dict(index="Tema", Tema="Ênfase Temática %"), orientation='h')
-            #estado_partido.update_layout(showlegend=False, yaxis={'categoryorder': 'total ascending'})
-            #st.plotly_chart(estado_partido, use_container_width=True)
-
-            maior_enfase = pd.DataFrame(enfase_partidos[['label_pt', 'prop_mean']]).sort_values(by = ['prop_mean'],
-            ascending=False)
-            #first = maior_enfase.iloc[:-1].round()
-
-            #maior_enfase_label = maior_enfase.iloc[0]
-            maior_enfase_percent = maior_enfase.iloc[:1]
-            rotulo = maior_enfase_percent['label_pt'].iloc[:1]
-            porcentagem = int(maior_enfase_percent['prop_mean'].iloc[:1] * 100)
-            #st.write(maior_enfase_label)
-
-
-
-            #st.info(f'**{escolha_parlamentar_do_estado}** apresentou **{str(n_proposta_uf)} propostas legislativas** ao total. A maior ênfase temática d{genero.index[0]} foi **{saliente_uf.index[0]}**, com aproximadamente **{first}% do total.**')
-            st.info(f'O tema de maior ênfase média nas propostas apresentadas pelo **{escolha_partido_do_estado}** é **{rotulo.to_string(index=False)}**, com **{porcentagem}%** do total.')
-            #st.info(f'{escolha_partido_do_estado} obteve maior ênfase temática em **{rotulo.to_string(index=False)}**, com **{porcentagem}%**.')
-                ## conhecer as Propostas
 
             ## conhecer as Propostas
-            st.title(f'Conheça as propostas apresentadas pelo {escolha_partido_do_estado}')
-
-            def load_ementa():
-                data_ementa = pd.read_excel('ementas-party.xlsx')
-                return data_ementa
-            inteiro_teor = load_ementa()
-            localizar_estado = inteiro_teor.loc[inteiro_teor.estado == uf_escolha, :]
-            localizar_partido = localizar_estado.loc[localizar_estado.partido_extenso == escolha_partido_do_estado, :]
-
+            st.header(f'Conheça as propostas apresentadas pelo {escolha_partido_do_estado}')
             #st.checkbox('Consultar propostas apresentadas deste Parlamentar por tema', False):
-            tema = localizar_partido['label_pt'].unique()
+            tema = f_par23['Tema'].unique()
             tema = np.append(tema, '')
             tema.sort()
             random_tema = st.radio("Escolha o Tema", tema)
             if random_tema != '':
-                random_val = localizar_partido.loc[localizar_partido.label_pt == random_tema, :]
-                sorteio = random_val.loc[random_val.label_pt == random_tema]
-                maior = pd.DataFrame(sorteio[['ementa', 'prop']]).max()
+                random_val = f_par23.loc[f_par23.Tema == random_tema, :]
+                sorteio = random_val.loc[random_val.Tema == random_tema]
+                maior = pd.DataFrame(sorteio[['ementa', 'maior_prob']]).max()
                 ementa_maior=maior.iloc[0]
                 probabilidade_maior=int((maior.iloc[1] * 100))
                 #st.write(probabilidade_maior)
@@ -620,7 +503,7 @@ if pol_part == 'Partido':
                 #st.write(max_percent)
                 ementa = pd.DataFrame(data=random_val['explicacao_tema'].value_counts())
                 st.write(ementa.index[0])
-                st.write(f'*Este é um exemplo de proposta apresentada pelo* **{escolha_partido_do_estado}** *sobre* **{random_tema}**.')
+                st.write(f'*Este é um exemplo de proposta apresentada pelo* **{escolha_partido_do_estado}** *sobre* **{random_tema}**')
                 #. A probabilidade de pertencer ao tópico é de {probabilidade_maior}%.')
                 st.success(ementa_maior)
                 #st.success(sorteio.query("Tema == @random_tema")[["ementa", "keywords"]].sample(n=1).iat[0, 0])
@@ -642,10 +525,6 @@ if pol_part == 'Partido':
                 with open(file_name) as f:
                     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
             local_css("style.css")
-
-
- 
-
 def inject_ga():
     GA_ID = "google_analytics"
 
