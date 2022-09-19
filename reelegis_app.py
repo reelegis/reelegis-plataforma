@@ -26,7 +26,7 @@ st.text('Última atualização em 18/09/2022')
 ## base de dados do político
 #@st.cache(ttl=60*60*24)
 #@st.cache(ttl=3600*24)
-@st.cache(ttl=60*60)
+@st.cache(ttl=60*30)
 #@st.cache(ttl=60*5,max_entries=20)
 
 def load_data():
