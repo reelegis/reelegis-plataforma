@@ -600,7 +600,7 @@ if pol_part == 'Partido':
             ### AQUI VEM A BASE DA ÊNFASE!!
 
             def load_enfase():
-                data_enfase = pd.read_excel('enfase-tematica-partidos.xlsx')
+                data_enfase = pd.read_excel('enfase-tematica-partidos2.xlsx')
                 return data_enfase
 
             enfase = load_enfase()
@@ -650,7 +650,7 @@ if pol_part == 'Partido':
             st.title(f'Conheça propostas dos principais temas enfatizados pelo {escolha_partido_do_estado}')
             st.warning(f'Veja algumas propostas dos temas mais enfatizados pelo Partido.')
             def load_ementa():
-                data_ementa_nova = pd.read_excel('ementas_todas_part-2.xlsx')
+                data_ementa_nova = pd.read_excel('ementas_todas_part-2--00.xlsx')
                 #data_ementa = pd.read_excel('https://docs.google.com/spreadsheets/d/11m7psGkn4pOe9oXhyM0xbYQwKpdhA6Fr771Mkme1R3w/edit?usp=sharing')
                 return data_ementa_nova
             inteiro_teor = load_ementa()
