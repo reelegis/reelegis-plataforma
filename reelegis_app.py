@@ -497,13 +497,13 @@ if pol_part == 'Político':
             local_css("style.css")
 
 
-df = df[df.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
-df = df[df.partido_ext_sigla != 'Partido Popular Socialista ( PPS )']
 
 #df = df[df.partido_ext_sigla != 'Partido Verde ( PV )']
 if pol_part == 'Partido':
     st.header('Onde você vota?')
     df = df.dropna()
+    df = df[df.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
+    df = df[df.partido_ext_sigla != 'Partido Popular Socialista ( PPS )']
     uf = df['estado_partido_exercicio'].unique()
     uf = np.append(uf, '')
     uf.sort()
