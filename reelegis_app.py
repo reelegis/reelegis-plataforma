@@ -497,6 +497,7 @@ if pol_part == 'Político':
             local_css("style.css")
 
 
+df = df[df.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
 
 #df = df[df.partido_ext_sigla != 'Partido Verde ( PV )']
 if pol_part == 'Partido':
