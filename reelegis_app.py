@@ -498,7 +498,7 @@ if pol_part == 'Político':
 
 
 
-
+df = df[df.partido_ext_sigla != 'Partido Verde ( PV )']
 if pol_part == 'Partido':
     st.header('Onde você vota?')
     df = df.dropna()
