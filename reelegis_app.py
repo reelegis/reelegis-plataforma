@@ -502,8 +502,7 @@ if pol_part == 'Político':
 if pol_part == 'Partido':
     st.header('Onde você vota?')
     df = df.dropna()
-    df = df[df.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
-    df = df[df.partido_ext_sigla != 'Partido Popular Socialista ( PPS )']
+
     uf = df['estado_partido_exercicio'].unique()
     uf = np.append(uf, '')
     uf.sort()
@@ -513,6 +512,8 @@ if pol_part == 'Partido':
         f = pd.DataFrame(f_par2)
         perc = f.nomeUrna.value_counts() #/ len(f) * 100
         partido_do_estado = f_par2['partido_ext_sigla'].unique()
+        partido_do_estado = partido_do_estado[partido_do_estado.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
+        partido_do_estado = partido_do_estado[partido_do_estado.partido_ext_sigla != 'Partido Popular Socialista ( PPS )']
         partido_do_estado = np.append(partido_do_estado, '')
         partido_do_estado.sort()
         #st.table(partido_do_estado)
