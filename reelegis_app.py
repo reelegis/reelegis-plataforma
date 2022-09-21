@@ -498,6 +498,7 @@ if pol_part == 'Político':
 
 
 df = df[df.partido_ext_sigla != 'Sem Partido ( Sem Partido )']
+df = df[df.partido_ext_sigla != 'Partido Popular Socialista ( PPS )']
 
 #df = df[df.partido_ext_sigla != 'Partido Verde ( PV )']
 if pol_part == 'Partido':
@@ -698,6 +699,9 @@ if pol_part == 'Partido':
                 with open(file_name) as f:
                     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
             local_css("style.css")
+            
+
+            
 def inject_ga():
     GA_ID = "google_analytics"
 
