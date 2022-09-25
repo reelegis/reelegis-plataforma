@@ -1963,7 +1963,10 @@ if pol_part == 'Ainda não decidi':
             with cola:
                 st.image("reelegis-cola-eleitoral.png", width=220)
             with eleitoral:
-                st.subheader('Baixe sua cola eleitoral [aqui!](https://drive.google.com/file/d/15PP5G0R2h8r0ueBBlrqx7PtmnENmfV9l/view?usp=sharing)')
+                st.subheader("""
+                Baixe sua cola eleitoral [aqui](https://drive.google.com/file/d/15PP5G0R2h8r0ueBBlrqx7PtmnENmfV9l/view?usp=sharing)
+                e não esqueça na hora de votar!
+                """)
 
 
             #f = pd.DataFrame(cand_ideal['nomeUrna'])
