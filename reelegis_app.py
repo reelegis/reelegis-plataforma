@@ -469,7 +469,7 @@ if uf_escolha != '':
         orientation='h', color_continuous_scale='Tealgrn',color='Taxa de',
         color_discrete_map={"% reeleitos": '#21ADA8',
         "% não reeleitos": '#C0C0C0'},
-        labels=dict(Taxa="", Porcentagem="% Porcentagem"))
+        labels=dict(Taxa="", Porcentagem="%"))
         figura_pizza.update_layout(showlegend=True, yaxis={'categoryorder': 'total ascending'})
         figura_pizza.update_traces(width=.6)
         st.info(f'Dos **{total_reeleicao}** parlamentares que concorreram à reeleição, **17%** conseguiram uma cadeira na Câmara dos Deputados. Esse resultado representa **13%** das **8** cadeiras na Câmara dos Deputados para o Estado.')
